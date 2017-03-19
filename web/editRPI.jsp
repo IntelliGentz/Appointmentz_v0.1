@@ -4,7 +4,7 @@
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.ResultSet"%>
-<%@page import="com.intelligentz.appointmentz.database.DBConnection"%>
+<%@page import="com.intelligentz.appointmentz.database.connectToDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page language="java"%>
 <!DOCTYPE html>

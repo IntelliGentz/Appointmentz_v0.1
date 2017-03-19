@@ -60,20 +60,20 @@
                         	<div class="form-top">
                             </div>
                             <div class="form-bottom">
-                                            <form role="form" action="./addDoctor" method="post" class="login-form">
+                                           <!-- <form role="form" action="./addDoctor" method="post" class="login-form">
 			                        <button type="submit" class="btn"><strong>Add Doctor</strong></button>
-			                    </form>
-								<br>
+			                    </form> 
+								<br> -->
                                             <form role="form" action="./addRoom" method="post" class="login-form">
 			                        <button type="submit" class="btn"><strong>Add Room</strong></button>
 			                    </form>
 								<br>
-			                    <form role="form" action="./addButton" method="post" class="login-form">
+			                    <!--<form role="form" action="./addButton" method="post" class="login-form">
 			                        <button type="submit" class="btn"><strong>Add Button</strong></button>
 			                    </form>
-								<br>
+								<br> -->
 								<form role="form" action="./addRPI" method="post" class="login-form">
-			                        <button type="submit" class="btn"><strong>Add RPI</strong></button>
+			                        <button type="submit" class="btn"><strong>Add Device</strong></button>
 			                    </form>
 								<br>
 								<form role="form" action="./map" method="post" class="login-form">

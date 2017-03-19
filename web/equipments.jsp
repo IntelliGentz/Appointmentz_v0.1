@@ -78,38 +78,33 @@
 									<th></th>
 								</tr>
                                                                 <%
+                                                                PreparedStatement preparedStatement;
+                                                                ResultSet resultSet;
+                                                                Connection connection;
                                                                 try 
                                                                 {
-                                                                Class.forName("com.mysql.jdbc.Driver");
-                                                                connectToDB con = new connectToDB();
-                                                                    if(con.connect()){
-                                                                        Connection connection = con.getConnection();
-                                                                        Statement stmt = connection.createStatement( );
-                                                                        String SQL = "select * from appointmentz.room";
-                                                                        ResultSet rs = stmt.executeQuery( SQL );
-
-                                                                        while(rs.next( )){
-                                                                            String room_id = rs.getString("room_id");
-                                                                            String room_number = rs.getString("room_number");
-                                                                            out.println("<tr>");
-                                                                            out.println("<form action='./deleteRoom' method='post'>");
-                                                                            out.println("<td>"+room_number+"</td>");
-                                                                            out.println("<input type='hidden' name='room_number' value='"+room_number+"'>");
-                                                                            out.println("<td>"+room_id+"</td>");
-                                                                            out.println("<input type='hidden' name='room_id' value='"+room_id+"'>");
-                                                                            out.println("<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the Room. Ref: RoomId = "+room_id+", Room number = "+room_number+" ');\" style='color:red'>delete</button></td>");
-                                                                            out.println("</form>");
-                                                                            out.println("</tr>");
-                                                                        }
-                                                                    }
-                                                                    else{
-                                                                        response.setStatus(response.SC_MOVED_TEMPORARILY);
-                                                                        response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
-                                                                    }
+                                                                
+                                                                connection = DBConnection.getDBConnection().getConnection();
+                                                                String SQL = "select * from appointmentz.room";
+                                                                preparedStatement = connection.prepareStatement(SQL);
+                                                                resultSet = preparedStatement.executeQuery();
+                                                                while(resultSet.next( )){
+                                                                    String room_id = resultSet.getString("room_id");
+                                                                    String room_number = resultSet.getString("room_number");
+                                                                    out.println("<tr>");
+                                                                    out.println("<form action='./deleteRoom' method='post'>");
+                                                                    out.println("<td>"+room_number+"</td>");
+                                                                    out.println("<input type='hidden' name='room_number' value='"+room_number+"'>");
+                                                                    out.println("<td>"+room_id+"</td>");
+                                                                    out.println("<input type='hidden' name='room_id' value='"+room_id+"'>");
+                                                                    out.println("<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the Room. Ref: RoomId = "+room_id+", Room number = "+room_number+" ');\" style='color:red'>delete</button></td>");
+                                                                    out.println("</form>");
+                                                                    out.println("</tr>");
+                                                                }
                                                                 } catch (SQLException e) {
                                                                 //throw new IllegalStateException
                                                                 out.println("Cannot connect the database!");
-
+                                                                response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
                                                                 }
                                                                 %>
 								
@@ -117,58 +112,10 @@
 						</table>
 					</center>
                     </div>
+                                                                
                                                                 <div class="row" style="color:white">
 					<center>
-                        <p><strong>Doctors</strong></p>
-                        <table class="table table-bordered table-inverse">
-								<tr>
-									<th>Doctor</th>
-									<th>Doctor Id</th>
-									<th></th>
-								</tr>
-                                                                <%
-                                                                try 
-                                                                {
-                                                                Class.forName("com.mysql.jdbc.Driver");
-                                                                connectToDB con = new connectToDB();
-                                                                    if(con.connect()){
-                                                                        Connection connection = con.getConnection();
-                                                                        Statement stmt = connection.createStatement( );
-                                                                        String SQL = "select * from appointmentz.doctor";
-                                                                        ResultSet rs = stmt.executeQuery( SQL );
-
-                                                                        while(rs.next( )){
-                                                                            String doctor_id = rs.getString("doctor_id");
-                                                                            String name = rs.getString("name");
-                                                                            out.println("<tr>");
-                                                                            out.println("<form action='./deleteDoctor' method='post'>");
-                                                                            out.println("<td>"+name+"</td>");
-                                                                            out.println("<input type='hidden' name='name' value='"+name+"'>");
-                                                                            out.println("<td>"+doctor_id+"</td>");
-                                                                            out.println("<input type='hidden' name='doctor_id' value='"+doctor_id+"'>");
-                                                                            out.println("<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the Doctor. Ref: DoctorId = "+doctor_id+", Doctor Name = "+name+" ');\" style='color:red'>delete</button></td>");
-                                                                            out.println("</form>");
-                                                                            out.println("</tr>");
-                                                                        }
-                                                                    }
-                                                                    else{
-                                                                        response.setStatus(response.SC_MOVED_TEMPORARILY);
-                                                                        response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
-                                                                    }
-                                                                } catch (SQLException e) {
-                                                                //throw new IllegalStateException
-                                                                out.println("Cannot connect the database!");
-
-                                                                }
-                                                                %>
-								
-							
-						</table>
-					</center>
-                    </div>
-                                                                <div class="row" style="color:white">
-					<center>
-                                <p><strong>RPI</strong></p>
+                                <p><strong>Device</strong></p>
                         <table class="table table-bordered table-inverse">
 								<tr>
 									<th>Auth</th>
@@ -178,44 +125,43 @@
 									<th></th>
 								</tr>
                                                                 <%
+                                                                PreparedStatement preparedStatement;
+                                                                ResultSet resultSet;
+                                                                Connection connection;
                                                                 try 
                                                                 {
-                                                                Class.forName("com.mysql.jdbc.Driver");
-                                                                connectToDB con = new connectToDB();
-                                                                    if(con.connect()){
-                                                                        Connection connection = con.getConnection();
-                                                                        Statement stmt = connection.createStatement( );
-                                                                        String SQL = "select * from appointmentz.rpi natural join appointmentz.room";
-                                                                        ResultSet rs = stmt.executeQuery( SQL );
-
-                                                                        while(rs.next( )){
-                                                                            String auth = rs.getString("auth");
-                                                                            String serial = rs.getString("serial");
-                                                                            String room_id = rs.getString("room_id");
-                                                                            String room_number = rs.getString("room_number");
-                                                                            out.println("<tr>");
-                                                                            out.println("<form action='./deleteRPI' method='post'>");
-                                                                            out.println("<td>"+auth+"</td>");
-                                                                            out.println("<input type='hidden' name='auth' value='"+auth+"'>");
-                                                                            out.println("<td>"+serial+"</td>");
-                                                                            out.println("<input type='hidden' name='serial' value='"+serial+"'>");
-                                                                            out.println("<td>"+room_number+"</td>");
-                                                                            out.println("<input type='hidden' name='room_number' value='"+room_number+"'>");
-                                                                            out.println("<td>"+room_id+"</td>");
-                                                                            out.println("<input type='hidden' name='room_id' value='"+room_id+"'>");
-                                                                            out.println("<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the RPI. Ref: Serial = "+serial+", rel: Room: "+room_number+" ');\" style='color:red'>delete</button></td>");
-                                                                            out.println("</form>");
-                                                                            out.println("</tr>");
-                                                                        }
-                                                                    }
-                                                                    else{
-                                                                        response.setStatus(response.SC_MOVED_TEMPORARILY);
-                                                                        response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
-                                                                    }
+                                                                connection = DBConnection.getDBConnection().getConnection();
+                                                                String SQL = "select * from appointmentz.rpi natural join appointmentz.room";
+                                                                preparedStatement = connection.prepareStatement(SQL);
+                                                                resultSet = preparedStatement.executeQuery();
+                                                                while(resultSet.next( )){
+                                                                    String auth = resultSet.getString("auth");
+                                                                    String serial = resultSet.getString("serial");
+                                                                    String room_id = resultSet.getString("room_id");
+                                                                    String room_number = resultSet.getString("room_number");
+                                                                    out.println("<tr>");
+                                                                    out.println("<form action='./deleteRPI' method='post'>");
+                                                                    out.println("<td>"+auth+"</td>");
+                                                                    out.println("<input type='hidden' name='auth' value='"+auth+"'>");
+                                                                    out.println("<td>"+serial+"</td>");
+                                                                    out.println("<input type='hidden' name='serial' value='"+serial+"'>");
+                                                                    out.println("<td>"+room_number+"</td>");
+                                                                    out.println("<input type='hidden' name='room_number' value='"+room_number+"'>");
+                                                                    out.println("<td>"+room_id+"</td>");
+                                                                    out.println("<input type='hidden' name='room_id' value='"+room_id+"'>");
+                                                                    out.println("<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the RPI. Ref: Serial = "+serial+", rel: Room: "+room_number+" ');\" style='color:red'>delete</button></td>");
+                                                                    out.println("</form>");
+                                                                    out.println("<form action='./deleteRPI' method='post'>");
+                                                                    out.println("<input type='hidden' name='room_number' value='"+room_number+"'>");
+                                                                    out.println("<input type='hidden' name='room_id' value='"+room_id+"'>");
+                                                                    out.println("<td><button type=\"submit\" style='color:red'>edit</button></td>");
+                                                                    out.println("</form>");
+                                                                    out.println("</tr>");
+                                                                }
                                                                 } catch (SQLException e) {
                                                                 //throw new IllegalStateException
                                                                 out.println("Cannot connect the database!");
-
+                                                                response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
                                                                 }
                                                                 %>
 								
@@ -223,63 +169,7 @@
 						</table>
 					</center>
                     </div>
-                                                                <div class="row" style="color:white">
-					<center>
-                                        <p><strong>Buttons</strong></p>
-                        <table class="table table-bordered table-inverse">
-								<tr>
-									<th>Auth</th>
-									<th>Serial</th>
-									<th>Doctor</th>
-									<th>Doctor Id</th>
-									<th></th>
-								</tr>
-                                                                <%
-                                                                try 
-                                                                {
-                                                                Class.forName("com.mysql.jdbc.Driver");
-                                                                connectToDB con = new connectToDB();
-                                                                    if(con.connect()){
-                                                                        Connection connection = con.getConnection();
-                                                                        Statement stmt = connection.createStatement( );
-                                                                        String SQL = "select * from appointmentz.button natural join appointmentz.doctor";
-                                                                        ResultSet rs = stmt.executeQuery( SQL );
-
-                                                                        while(rs.next( )){
-                                                                            String auth = rs.getString("auth");
-                                                                            String serial = rs.getString("serial");
-                                                                            String doctor_id = rs.getString("doctor_id");
-                                                                            String name = rs.getString("name");
-                                                                            out.println("<tr>");
-                                                                            out.println("<form action='./deleteButton' method='post'>");
-                                                                            out.println("<td>"+auth+"</td>");
-                                                                            out.println("<input type='hidden' name='auth' value='"+auth+"'>");
-                                                                            out.println("<td>"+serial+"</td>");
-                                                                            out.println("<input type='hidden' name='serial' value='"+serial+"'>");
-                                                                            out.println("<td>"+name+"</td>");
-                                                                            out.println("<input type='hidden' name='name' value='"+name+"'>");
-                                                                            out.println("<td>"+doctor_id+"</td>");
-                                                                            out.println("<input type='hidden' name='doctor_id' value='"+doctor_id+"'>");
-                                                                            out.println("<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the Button. Ref: Serial = "+serial+" Rel: Doctor Name = "+name+"');\" style='color:red'>delete</button></td>");
-                                                                            out.println("</form>");
-                                                                            out.println("</tr>");
-                                                                        }
-                                                                    }
-                                                                    else{
-                                                                        response.setStatus(response.SC_MOVED_TEMPORARILY);
-                                                                        response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
-                                                                    }
-                                                                } catch (SQLException e) {
-                                                                //throw new IllegalStateException
-                                                                out.println("Cannot connect the database!");
-
-                                                                }
-                                                                %>
-								
-							
-						</table>
-					</center>
-                    </div>
+                                                                
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3 social-login">
                         	<h3>Get notified before your appointment</h3>

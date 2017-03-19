@@ -5,12 +5,6 @@
 --%>
 
 <%@ page session="true" %>
-<%@page import="java.sql.SQLException"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="com.intelligentz.appointmentz.database.connectToDB"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -47,26 +41,6 @@
     </head>
 
     <body>
-	<%
-        /*out.println("Connecting database...");
-        
-        try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            Statement stmt = connection.createStatement( );
-            String SQL = "SELECT * FROM user";
-            ResultSet rs = stmt.executeQuery( SQL );
-            out.println("Database connected!");
-            rs.next( );
-            String userName = rs.getString("userName");
-            String passWord = rs.getString("passWord");
-            out.println("<br>");
-            out.println("UserName: "+userName+"\nPassWord: "+passWord);
-        } catch (SQLException e) {
-            //throw new IllegalStateException
-            out.println("Cannot connect the database!");
-            out.println(e.getMessage());
-        }*/
-        %>
         <!-- Top content -->
         <div class="top-content">
         	
@@ -74,7 +48,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 text">
-                            <h1><strong>APPointmentZ</strong> Login Form</h1>
+                            <h1><strong>APPointmentZ</strong> Login Form <% if(request.getParameter("auth")!=null){ out.println("<p style='color:red'>authentication failed!</p>");} %></h1>
                             <div class="description">
                             	<p>
 	                            	Why wait in queues. Do something you like. We will notify you. <a href=""><strong>APPointmentZ.lk</strong></a>, Join with us

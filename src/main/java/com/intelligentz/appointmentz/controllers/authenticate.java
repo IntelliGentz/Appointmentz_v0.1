@@ -4,98 +4,97 @@
  * and open the template in the editor.
  */
 package com.intelligentz.appointmentz.controllers;
-import com.intelligentz.appointmentz.database.connectToDB;
-import com.mysql.jdbc.Connection;
-import javax.servlet.http.*;  
-import javax.servlet.*;  
-import java.io.*;
+
+import com.intelligentz.appointmentz.database.DBConnection;
+import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.codec.binary.Hex;
 /**
  *
- * @author ndine
+ * @author T430
  */
-public class authenticate extends HttpServlet{  
-    connectToDB con;
+public class authenticate extends HttpServlet{
+    private static PreparedStatement preparedStatement;
+    private static ResultSet resultSet;
+    private static Connection connection;
+    private static final Logger LOGGER = Logger.getLogger( authenticate.class.getName() );
+    
     @Override
     public void doPost(HttpServletRequest req,HttpServletResponse res)  throws ServletException,IOException  
     {  
-        try {
-            String username = req.getParameter("form-username");
+            MessageDigest messageDigest = null;
+            try {
+                messageDigest = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException ex) {
+                Logger.getLogger(authenticate.class.getName()).log(Level.SEVERE, "Error:{0}", ex.toString());
+            }
+            messageDigest.reset();
+            messageDigest.update(req.getParameter("form-password").getBytes(Charset.forName("UTF8")));
+            final byte[] resultByte = messageDigest.digest();
+            //final String password = new String(Hex.encodeHex(resultByte));
+            
+            String userName = req.getParameter("form-username");
             String password = req.getParameter("form-password");
-            con = new connectToDB();
-            if(con.connect()){
-                Connection  connection = con.getConnection();
-                Class.forName("com.mysql.jdbc.Driver");
-                Statement stmt = connection.createStatement( ); 
-                String SQL;
-                SQL = "select * from appointmentz.hospital";
-                 //WHERE hospital_id=\""+username+"\" AND password=\""+password+"\"";
-                ResultSet rs = stmt.executeQuery(SQL);
-                if(rs.wasNull()){
-                    displayMessage(res,"response in null");
-                }
-                boolean check = false;
-                while ( rs.next( ) ) {
-                    String db_username = rs.getString("hospital_id");
-                    String db_password = rs.getString("password");
-                    String db_hospital_name = rs.getString("hospital_name");
-                    if((username == null ? db_username == null : username.equals(db_username)) && (password == null ? db_password == null : password.equals(db_password))){
-                        check=true;
-                        //displayMessage(res,"Authentication Success!");
-                        try{
-                                connection.close();
-                            } catch (SQLException e) { /* ignored */}
-                        
-                        HttpSession session = req.getSession();
-                        session.setAttribute( "hospital_id", db_username );
-                        session.setAttribute( "hospital_name", db_hospital_name);
-                        
-                        res.sendRedirect("./home");
-                        
-                    }
-                }
-                if(!check){
-                    if (connection != null) {
-                        try {
-                            connection.close();
-                        } catch (SQLException e) { /* ignored */}
-                    }
-                    displayMessage(res,"Authentication Failed!"+password);
-                }
-            }
-            else{
-                con.showErrormessage(res);
-            }
+            authenticate(userName,password,req,res);
             
-            
-            /*res.setContentType("text/html");//setting the content type
-            PrintWriter pw=res.getWriter();//get the stream to write the data
-            
-            //writing html in the stream
-            pw.println("<html><body>");
-            pw.println("Welcome to servlet: "+username);
-            pw.println("</body></html>");
-            
-            pw.close();//closing the stream
-            */
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(authenticate.class.getName()).log(Level.SEVERE, null, ex);
+}
+    
+private void authenticate(String userName, String password, HttpServletRequest req,HttpServletResponse res){
+    boolean status = false;
+    try 
+    {
+        connection = DBConnection.getDBConnection().getConnection();
+        String SQL1 = "select * from appointmentz.hospital WHERE hospital_id = ? and password = ?";
+
+        preparedStatement = connection.prepareStatement(SQL1);
+        preparedStatement.setString(1, userName);
+        preparedStatement.setString(2, password);
+        resultSet = preparedStatement.executeQuery();
+        if(resultSet.next()){
+            String db_username = resultSet.getString("hospital_id");
+            String db_hospital_name = resultSet.getString("hospital_name");
+            HttpSession session = req.getSession();
+            session.setAttribute( "hospital_id", db_username );
+            session.setAttribute( "hospital_name", db_hospital_name);
+
+            res.sendRedirect("./home");
+        }
+        else{
+            res.sendRedirect("./index.jsp?auth=failed");
+        }
+
+    } 
+    catch (SQLException | IOException | PropertyVetoException ex) 
+    {
+        LOGGER.log(Level.SEVERE, ex.toString(), ex);
+    }
+    finally 
+    {
+        try {
+        DbUtils.closeQuietly(resultSet);
+        DbUtils.closeQuietly(preparedStatement);
+        DbUtils.close(connection);
         } catch (SQLException ex) {
-            Logger.getLogger(authenticate.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(authenticate.class.getName()).log(Level.SEVERE, ex.toString(), ex);
         }
     }
-    public void displayMessage (HttpServletResponse res,String s) throws IOException{
-        res.setContentType("text/html");//setting the content type
-        PrintWriter pw=res.getWriter();//get the stream to write the data
-        //writing html in the stream
-        pw.println("<html><body>");
-        pw.println("Info: "+s);
-        pw.println("</body></html>");
+}
+    
+}
 
-        pw.close();//closing the stream
-    }
-}  
+
