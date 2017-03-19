@@ -1,10 +1,5 @@
 <%@ page session="true" %>
-<%@page import="java.sql.SQLException"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="com.intelligentz.appointmentz.database.connectToDB"%>
+<%@page import="com.intelligentz.appointmentz.controllers.Data"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page language="java"%>
 <!DOCTYPE html>
@@ -78,34 +73,7 @@
 									<th></th>
 								</tr>
                                                                 <%
-                                                                PreparedStatement preparedStatement;
-                                                                ResultSet resultSet;
-                                                                Connection connection;
-                                                                try 
-                                                                {
-                                                                
-                                                                connection = DBConnection.getDBConnection().getConnection();
-                                                                String SQL = "select * from appointmentz.room";
-                                                                preparedStatement = connection.prepareStatement(SQL);
-                                                                resultSet = preparedStatement.executeQuery();
-                                                                while(resultSet.next( )){
-                                                                    String room_id = resultSet.getString("room_id");
-                                                                    String room_number = resultSet.getString("room_number");
-                                                                    out.println("<tr>");
-                                                                    out.println("<form action='./deleteRoom' method='post'>");
-                                                                    out.println("<td>"+room_number+"</td>");
-                                                                    out.println("<input type='hidden' name='room_number' value='"+room_number+"'>");
-                                                                    out.println("<td>"+room_id+"</td>");
-                                                                    out.println("<input type='hidden' name='room_id' value='"+room_id+"'>");
-                                                                    out.println("<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the Room. Ref: RoomId = "+room_id+", Room number = "+room_number+" ');\" style='color:red'>delete</button></td>");
-                                                                    out.println("</form>");
-                                                                    out.println("</tr>");
-                                                                }
-                                                                } catch (SQLException e) {
-                                                                //throw new IllegalStateException
-                                                                out.println("Cannot connect the database!");
-                                                                response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
-                                                                }
+                                                                out.println(Data.equipmentsGetRooms(response));
                                                                 %>
 								
 							
@@ -123,46 +91,10 @@
 									<th>Room Number</th>
 									<th>Room Id</th>
 									<th></th>
+                                                                        <th></th>
 								</tr>
                                                                 <%
-                                                                PreparedStatement preparedStatement;
-                                                                ResultSet resultSet;
-                                                                Connection connection;
-                                                                try 
-                                                                {
-                                                                connection = DBConnection.getDBConnection().getConnection();
-                                                                String SQL = "select * from appointmentz.rpi natural join appointmentz.room";
-                                                                preparedStatement = connection.prepareStatement(SQL);
-                                                                resultSet = preparedStatement.executeQuery();
-                                                                while(resultSet.next( )){
-                                                                    String auth = resultSet.getString("auth");
-                                                                    String serial = resultSet.getString("serial");
-                                                                    String room_id = resultSet.getString("room_id");
-                                                                    String room_number = resultSet.getString("room_number");
-                                                                    out.println("<tr>");
-                                                                    out.println("<form action='./deleteRPI' method='post'>");
-                                                                    out.println("<td>"+auth+"</td>");
-                                                                    out.println("<input type='hidden' name='auth' value='"+auth+"'>");
-                                                                    out.println("<td>"+serial+"</td>");
-                                                                    out.println("<input type='hidden' name='serial' value='"+serial+"'>");
-                                                                    out.println("<td>"+room_number+"</td>");
-                                                                    out.println("<input type='hidden' name='room_number' value='"+room_number+"'>");
-                                                                    out.println("<td>"+room_id+"</td>");
-                                                                    out.println("<input type='hidden' name='room_id' value='"+room_id+"'>");
-                                                                    out.println("<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the RPI. Ref: Serial = "+serial+", rel: Room: "+room_number+" ');\" style='color:red'>delete</button></td>");
-                                                                    out.println("</form>");
-                                                                    out.println("<form action='./deleteRPI' method='post'>");
-                                                                    out.println("<input type='hidden' name='room_number' value='"+room_number+"'>");
-                                                                    out.println("<input type='hidden' name='room_id' value='"+room_id+"'>");
-                                                                    out.println("<td><button type=\"submit\" style='color:red'>edit</button></td>");
-                                                                    out.println("</form>");
-                                                                    out.println("</tr>");
-                                                                }
-                                                                } catch (SQLException e) {
-                                                                //throw new IllegalStateException
-                                                                out.println("Cannot connect the database!");
-                                                                response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
-                                                                }
+                                                                 out.println(Data.equipmentsGetRPI(response));
                                                                 %>
 								
 							
