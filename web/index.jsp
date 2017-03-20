@@ -79,7 +79,10 @@
 			                        </div>
 			                        <button type="submit" class="btn">Sign in!</button>
 			                    </form>
+                                <br>
+                                <center><a style="font-size:18px; color: #eb6161;" href="register.jsp">Register</a></center>
 		                    </div>
+                             
                         </div>
                     </div>
                     <div class="row">

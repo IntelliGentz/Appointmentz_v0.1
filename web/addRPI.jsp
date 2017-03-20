@@ -79,7 +79,7 @@
                                                         <div class="dropdown">
                                                         <select class="selectpicker" name="room_id" style="width:400px; height:50px;">
                                                             <%
-                                                                out.println(Data.getRooms(response));
+                                                                out.println(Data.getRooms(response, session.getAttribute("hospital_id")));
                                                             %>
 
                                                         </select>

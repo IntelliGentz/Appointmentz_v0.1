@@ -74,7 +74,7 @@
                         			<h3>Use this form to add RPI</h3>
                             		<p>Enter the information of RPI to subscribe to the service:</p>
                         		</div>
-                            </div>
+                                </div>
                             <div class="form-bottom">
 			                    <form role="form" action="addBerry" method="post" class="login-form">
 									<div class="form-group">

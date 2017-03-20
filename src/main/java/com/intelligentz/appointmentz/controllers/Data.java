@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Data {
     
-    public static String getRooms(HttpServletResponse res){
+    public static String getRooms(HttpServletResponse res, String hospital_id){
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         Connection connection;
@@ -29,8 +29,9 @@ public class Data {
         {
 
         connection = DBConnection.getDBConnection().getConnection();
-        String SQL = "select room_number,room_id from appointmentz.room";
+        String SQL = "select room_number,room_id from appointmentz.room where hospital_id = ?";
         preparedStatement = connection.prepareStatement(SQL);
+        preparedStatement.setString(1, hospital_id);
         resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next( )){
@@ -45,7 +46,7 @@ public class Data {
         }
         return rooms;
     }
-    public static String equipmentsGetRooms(HttpServletResponse res){
+    public static String equipmentsGetRooms(HttpServletResponse res, String hospital_id){
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         Connection connection;
@@ -54,8 +55,9 @@ public class Data {
         {
 
         connection = DBConnection.getDBConnection().getConnection();
-        String SQL = "select * from appointmentz.room";
+        String SQL = "select * from appointmentz.room where hospital_id = ?";
         preparedStatement = connection.prepareStatement(SQL);
+        preparedStatement.setString(1, hospital_id);
         resultSet = preparedStatement.executeQuery();
         while(resultSet.next( )){
             String room_id = resultSet.getString("room_id");
@@ -71,7 +73,7 @@ public class Data {
         return rooms;
     }
     
-    public static String equipmentsGetRPI(HttpServletResponse res){
+    public static String equipmentsGetRPI(HttpServletResponse res, String hospital_id){
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         Connection connection;
@@ -79,8 +81,9 @@ public class Data {
         try 
         {
         connection = DBConnection.getDBConnection().getConnection();
-        String SQL = "select * from appointmentz.rpi natural join appointmentz.room";
+        String SQL = "select * from appointmentz.rpi natural join appointmentz.room where hospital_id = ?";
         preparedStatement = connection.prepareStatement(SQL);
+        preparedStatement.setString(1, hospital_id);
         resultSet = preparedStatement.executeQuery();
         while(resultSet.next( )){
             String auth = resultSet.getString("auth");
@@ -101,5 +104,31 @@ public class Data {
             res.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
         }
         return rpi;
+    }
+    
+    public static String checkHospitalId(String hospital_id){
+        
+        PreparedStatement preparedStatement;
+        ResultSet resultSet;
+        Connection connection;
+        String check = "Unavailable";
+        try 
+        {
+
+        connection = DBConnection.getDBConnection().getConnection();
+        String SQL = "select hospital_id from hospital where hospital_id = ?";
+        preparedStatement = connection.prepareStatement(SQL);
+        preparedStatement.setString(1, hospital_id);
+        resultSet = preparedStatement.executeQuery();
+
+        if(resultSet.next( )){
+            check = "Available";
+        }
+
+        } catch (SQLException |IOException | PropertyVetoException e) {
+            check = "Error";
+        }
+        return check;
+        
     }
 }

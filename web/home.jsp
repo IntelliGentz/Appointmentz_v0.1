@@ -76,14 +76,6 @@
 			                        <button type="submit" class="btn"><strong>Add Device</strong></button>
 			                    </form>
 								<br>
-								<form role="form" action="./map" method="post" class="login-form">
-			                        <button type="submit" class="btn"><strong>Map</strong></button>
-			                    </form>
-								<br>
-								<form role="form" action="./sessions" method="post" class="login-form">
-			                        <button type="submit" class="btn"><strong>Sessions</strong></button>
-			                    </form>
-                                                                <br>
 								<form role="form" action="./equipments" method="post" class="login-form">
 			                        <button type="submit" class="btn"><strong>Equipments</strong></button>
 			                    </form>
