@@ -65,14 +65,10 @@ private void register(String userName, String password, String hospitalName, Htt
         preparedStatement.setString(1, userName);
         preparedStatement.setString(2, hospitalName);
         preparedStatement.setString(3, password);
-        status = preparedStatement.execute();
-        if(status){
-            res.sendRedirect("./index");
-        }
-        else{
-            res.sendRedirect("./register.jsp?register=failed");
-        }
-
+        preparedStatement.executeUpdate();
+        
+        res.sendRedirect("./index.jsp?register=successfully registered");
+        
     } 
     catch (SQLException | IOException | PropertyVetoException ex) 
     {

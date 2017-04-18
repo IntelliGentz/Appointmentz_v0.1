@@ -1,4 +1,11 @@
 <%@ page session="true" %>
+<%
+    
+    if(session.getAttribute("hospital_id")==null || session.getAttribute("hospital_name")==null){
+        response.sendRedirect("./index.jsp?auth=failed");
+    }
+    
+    %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -29,7 +36,8 @@
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
         <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
-
+        <script src="js/jquery.min.js"></script>
+        
     </head>
 
     <body>
@@ -39,8 +47,7 @@
             <div style="position:absolute; right:30px; top:20px;">
                 <button class="btn btn-primary dropdown-toggle" data-target="#demo" data-toggle="collapse" style='color:white'><% out.println(session.getAttribute("hospital_name")); %>
                         </button>
-                        <button class="btn btn-primary" style='color:white' onClick="window.location.assign('home.jsp')">Home
-                </button>
+                        <button class="btn btn-primary" style='color:white' onClick="window.location.assign('home.jsp')">Home</button>
                 <div id="demo" class="collapse">
                 <form action="./logout" method="post">
                         <input class="btn btn-primary" style="color:red" type="submit" value="Logout" />
@@ -73,14 +80,14 @@
 			                    <form role="form" action="./addR" method="post" class="login-form">
 									<div class="form-group">
 			                    		<label class="sr-only" for="form-username"></label>
-										<p>Room Number:</p>
-			                        	<input type="text" name="room_number" placeholder="Room Number" class="form-username form-control" id="">
+										<p>Room Number:</p><p style="color: red;" id="hos_id"></p>
+			                        	<input type="text" name="room_number" id="room_number" placeholder="Room Number" class="form-username form-control" >
 			                        </div>
 			                    	<div class="form-group">
-			                    		<input type="hidden" name="hospital_id" id="" value="<%=session.getAttribute("hospital_id")%>">
+			                    		<input type="hidden" name="hospital_id" id="hospital_id" value="<%=session.getAttribute("hospital_id")%>">
 			                        </div>
 									
-			                        <button type="submit" class="btn">Add Room</button>
+			                        <button type="submit" id="myBtn" class="btn">Add Room</button>
 			                    </form>
 		                    </div>
                         </div>
@@ -94,6 +101,35 @@
             </div>
             
         </div>
+        <script>
+            $(document).ready(function checkRoomId(){
+                $("#room_number").keyup(function(){
+                    $.get("checkRoomId.jsp?room_id="+$("#room_number").val(), function(data, status,response){
+                        state = response.getResponseHeader("STATE");
+                        if(state === "Unavailable"){
+                            $("#hos_id").text("");
+                            $("#form-hospital-id").css("background-color", "white");
+                            $(':input[type="submit"]').prop('disabled', false);
+                            
+                        }
+                        else if(state === "Available"){
+                            $("#hos_id").text("This Room Id Already Available!");
+                            $("#form-hospital-id").focus()
+                            $("#form-hospital-id").css("background-color", "#ea8596");
+                            $(':input[type="submit"]').prop('disabled', true);
+                            
+                        }
+                        else{
+                            $("#hos_id").text("Error occured!");
+                            $(':input[type="submit"]').prop('disabled', true);
+                            
+                       }
+
+                    });
+                });
+            });    
+
+        </script>
 
 
         <!-- Javascript -->

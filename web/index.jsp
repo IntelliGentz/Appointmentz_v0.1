@@ -48,7 +48,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 text">
-                            <h1><strong>APPointmentZ</strong> Login Form <% if(request.getParameter("auth")!=null){ out.println("<p style='color:red'>authentication failed!</p>");} %></h1>
+                            <h1><strong>APPointmentZ</strong> Login Form <% if(request.getParameter("auth")!=null){ out.println("<p style='color:red'>authentication failed!</p>");} %><% if(request.getParameter("register")!=null){ out.println("<p style='color:green'>"+request.getParameter("register")+"</p>");} %></h1>
                             <div class="description">
                             	<p>
 	                            	Why wait in queues. Do something you like. We will notify you. <a href=""><strong>APPointmentZ.lk</strong></a>, Join with us

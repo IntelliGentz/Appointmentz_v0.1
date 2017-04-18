@@ -22,27 +22,24 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ndine
  */
-public class addBerry extends HttpServlet{  
+public class editBerry extends HttpServlet{  
     private static PreparedStatement preparedStmt;
     //private static ResultSet resultSet;
     private static Connection connection;
-    private static final Logger LOGGER = Logger.getLogger( addBerry.class.getName() );
+    private static final Logger LOGGER = Logger.getLogger( editBerry.class.getName() );
     
     @Override
     public void doPost(HttpServletRequest req,HttpServletResponse res)  throws ServletException,IOException  
     {  
         try {
-            String room_number = req.getParameter("room_number");
-            String hospital_id = req.getParameter("hospital_id");
+            String room_id = req.getParameter("room_number");
             String auth = req.getParameter("auth");
             String serial = req.getParameter("serial");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "insert into appointmentz.rpi ( room_number, hospital_id, auth, serial) VALUES (?,?,?,?)";
+            String SQL1 = "update appointmentz.rpi set room_number = ? where serial= ?";
             preparedStmt = connection.prepareStatement(SQL1);
-            preparedStmt.setString (1, room_number);
-            preparedStmt.setString (2, hospital_id);
-            preparedStmt.setString (3, auth);
-            preparedStmt.setString (4, serial);
+            preparedStmt.setString (1, room_id);
+            preparedStmt.setString (2, serial);
             // execute the preparedstatement
             preparedStmt.execute();
             res.sendRedirect("./home");

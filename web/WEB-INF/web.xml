@@ -111,7 +111,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>editRPI.jsp</servlet-name>
-        <url-pattern>/edit</url-pattern>
+        <url-pattern>/editRPI</url-pattern>
     </servlet-mapping>
     
     <servlet>

@@ -46,16 +46,17 @@ public class authenticate extends HttpServlet{
             messageDigest.reset();
             messageDigest.update(req.getParameter("form-password").getBytes(Charset.forName("UTF8")));
             final byte[] resultByte = messageDigest.digest();
-            //final String password = new String(Hex.encodeHex(resultByte));
+            final String password = new String(Hex.encodeHex(resultByte));
             
             String userName = req.getParameter("form-username");
-            String password = req.getParameter("form-password");
+            //String password = req.getParameter("form-password");
             authenticate(userName,password,req,res);
             
 }
     
 private void authenticate(String userName, String password, HttpServletRequest req,HttpServletResponse res){
     boolean status = false;
+    HttpSession session = req.getSession();
     try 
     {
         connection = DBConnection.getDBConnection().getConnection();
@@ -68,14 +69,17 @@ private void authenticate(String userName, String password, HttpServletRequest r
         if(resultSet.next()){
             String db_username = resultSet.getString("hospital_id");
             String db_hospital_name = resultSet.getString("hospital_name");
-            HttpSession session = req.getSession();
+            
             session.setAttribute( "hospital_id", db_username );
             session.setAttribute( "hospital_name", db_hospital_name);
 
             res.sendRedirect("./home");
         }
         else{
+            
+            session.invalidate();
             res.sendRedirect("./index.jsp?auth=failed");
+        
         }
 
     } 

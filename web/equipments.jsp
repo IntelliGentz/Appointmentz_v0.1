@@ -2,6 +2,13 @@
 <%@page import="com.intelligentz.appointmentz.controllers.Data"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page language="java"%>
+<%
+    
+    if(session.getAttribute("hospital_id")==null || session.getAttribute("hospital_name")==null){
+        response.sendRedirect("./index.jsp?auth=failed");
+    }
+    
+    %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -69,7 +76,6 @@
                         <table class="table table-bordered table-inverse">
 								<tr>
                                                                         <th>Room Number</th>
-									<th>Room Id</th>
 									<th></th>
 								</tr>
                                                                 <%
@@ -95,7 +101,6 @@
 									<th>Auth</th>
 									<th>Serial</th>
 									<th>Room Number</th>
-									<th>Room Id</th>
 									<th></th>
                                                                         <th></th>
 								</tr>

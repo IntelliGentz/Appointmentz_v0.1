@@ -1,12 +1,14 @@
 <%@ page session="true" %>
-<%@page import="java.sql.SQLException"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="com.intelligentz.appointmentz.database.connectToDB"%>
+<%@page import="com.intelligentz.appointmentz.controllers.Data"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page language="java"%>
+<%
+    
+    if(session.getAttribute("hospital_id")==null || session.getAttribute("hospital_name")==null){
+        response.sendRedirect("./index.jsp?auth=failed");
+    }
+    
+    %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -74,7 +76,7 @@
                         			<h3>Use this form to add RPI</h3>
                             		<p>Enter the information of RPI to subscribe to the service:</p>
                         		</div>
-                                </div>
+                            </div>
                             <div class="form-bottom">
 			                    <form role="form" action="addBerry" method="post" class="login-form">
 									<div class="form-group">
@@ -84,29 +86,14 @@
                                                         <div class="dropdown">
                                                         <select class="selectpicker" name="room_id" style="width:400px; height:50px;">
                                                             <%
-                                                                PreparedStatement preparedStatement;
-                                                                ResultSet resultSet;
-                                                                Connection connection;
-                                                                try 
-                                                                {
-                                                                
-                                                                connection = DBConnection.getDBConnection().getConnection();
-                                                                String SQL = "select room_number,room_id from appointmentz.room";
-                                                                preparedStatement = connection.prepareStatement(SQL);
-                                                                resultSet = preparedStatement.executeQuery();
-
-                                                                while(resultSet.next( )){
-                                                                    String room_number = resultSet.getString("room_number");
-                                                                    String room_id = resultSet.getString("room_id");
-                                                                    out.println("<option value=\""+room_id+"\">"+room_number+"</option>");
+                                                                String temp2 = Data.getRooms((String)session.getAttribute("hospital_id"),(String)request.getParameter("room_id"));
+                                                                if(temp2 == "Error"){
+                                                                        response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
                                                                 }
-                                                                
-                                                                } catch (SQLException e) {
-                                                                //throw new IllegalStateException
-                                                                out.println("Cannot connect the database!");
-                                                                response.setHeader("Location", "error.jsp?error=MYSQL connection failed!");        
+                                                                else{
+                                                                    out.println(temp2);
                                                                 }
-                                                                %>
+                                                            %>
 
                                                         </select>
                                                     </div>
@@ -114,14 +101,16 @@
 			                    	<div class="form-group">
 			                    		<label class="sr-only" for="form-username"></label>
 										<p>Serial Number:</p>
-			                        	<input type="text" name="serial" placeholder="Serial Number..." class="form-username form-control" id="form-username">
+			                        	<input disabled type="text" name="serial" placeholder="Serial Number..." class="form-username form-control" value="<%=request.getParameter("serial")%>" id="form-username">
 			                        </div>
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-password"></label>
 										<p>Auth code:</p>
-			                        	<input type="text" name="auth" placeholder="Auth code..." class="form-password form-control" id="form-password">
+			                        	<input disabled type="text" name="auth" placeholder="Auth code..." class="form-password form-control" value="<%=request.getParameter("auth")%>" id="form-password">
 			                        </div>
-			                        <button type="submit" class="btn">Add RPI</button>
+			                        <button type="submit" class="btn">Update values</button>
+                                                <button type="button" class="btn" onClick="window.location.assign('home.jsp')">Back</button>
+                                                
 			                    </form>
 		                    </div>
                         </div>
