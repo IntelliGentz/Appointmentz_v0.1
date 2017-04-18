@@ -122,5 +122,28 @@
         <servlet-name>equipments.jsp</servlet-name>
         <url-pattern>/equipments</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>REST API</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>com.intelligentz.myturn.rest_resources</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <servlet-class>com.intelligentz.appointmentz.servlet.UploadServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/upload</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>REST API</servlet-name>
+        <url-pattern>/myturn/*</url-pattern>
+    </servlet-mapping>
     
 </web-app>
