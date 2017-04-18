@@ -16,6 +16,7 @@ import java.beans.PropertyVetoException;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,6 +24,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.dbutils.DbUtils;
 
 /**
  *
@@ -30,7 +32,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class addR extends HttpServlet{  
     private static PreparedStatement preparedStmt;
-    //private static ResultSet resultSet;
+    private static ResultSet resultSet;
     private static java.sql.Connection connection;
     private static final Logger LOGGER = Logger.getLogger( addR.class.getName() );
     
@@ -52,6 +54,16 @@ public class addR extends HttpServlet{
         catch (SQLException | PropertyVetoException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
             res.sendRedirect("./error.jsp?error=Error in adding room!\n+"+ex.toString()+"");
+        }
+        finally 
+        {
+            try {
+            DbUtils.closeQuietly(resultSet);
+            DbUtils.closeQuietly(preparedStmt);
+            DbUtils.close(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(register.class.getName()).log(Level.SEVERE, ex.toString(), ex);
+            }
         }
     }
 }  

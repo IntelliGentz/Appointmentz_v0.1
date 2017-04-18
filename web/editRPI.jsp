@@ -78,7 +78,7 @@
                         		</div>
                             </div>
                             <div class="form-bottom">
-			                    <form role="form" action="addBerry" method="post" class="login-form">
+			                    <form role="form" action="editBerry" method="post" class="login-form">
 									<div class="form-group">
 			                        	<label class="sr-only" for="form-password"></label>
 										<p>Room Number:</p>
@@ -86,7 +86,7 @@
                                                         <div class="dropdown">
                                                         <select class="selectpicker" name="room_id" style="width:400px; height:50px;">
                                                             <%
-                                                                String temp2 = Data.getRooms((String)session.getAttribute("hospital_id"),(String)request.getParameter("room_id"));
+                                                                String temp2 = Data.getRooms((String)session.getAttribute("hospital_id"),(String)request.getParameter("room_number"));
                                                                 if(temp2 == "Error"){
                                                                         response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
                                                                 }
@@ -109,7 +109,7 @@
 			                        	<input disabled type="text" name="auth" placeholder="Auth code..." class="form-password form-control" value="<%=request.getParameter("auth")%>" id="form-password">
 			                        </div>
 			                        <button type="submit" class="btn">Update values</button>
-                                                <button type="button" class="btn" onClick="window.location.assign('home.jsp')">Back</button>
+                                                <button type="button" class="btn" onClick="window.location.assign('equipments.jsp')">Back</button>
                                                 
 			                    </form>
 		                    </div>

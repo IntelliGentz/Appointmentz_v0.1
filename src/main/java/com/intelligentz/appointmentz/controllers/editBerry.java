@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.dbutils.DbUtils;
 
 /**
  *
@@ -36,7 +37,7 @@ public class editBerry extends HttpServlet{
             String auth = req.getParameter("auth");
             String serial = req.getParameter("serial");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "update appointmentzv1.rpi set room_number = ? where serial= ?";
+            String SQL1 = "update rpi set room_number = ? where serial= ?";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, room_id);
             preparedStmt.setString (2, serial);
@@ -47,6 +48,16 @@ public class editBerry extends HttpServlet{
         catch (SQLException | PropertyVetoException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
             res.sendRedirect("./error.jsp?error=Error in adding device!\n+"+ex.toString()+"");
+        }
+        finally 
+        {
+            try {
+           // DbUtils.closeQuietly(resultSet);
+            DbUtils.closeQuietly(preparedStmt);
+            DbUtils.close(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(register.class.getName()).log(Level.SEVERE, ex.toString(), ex);
+            }
         }
     }
 }  

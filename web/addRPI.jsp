@@ -84,7 +84,7 @@
 										<p>Room Number:</p>
 			                        	<!--<input type="text" name="form-password" placeholder="RPI Id... or Counter Number" class="form-password form-control" id="form-password">-->
                                                         <div class="dropdown">
-                                                        <select class="selectpicker" name="room_id" style="width:400px; height:50px;">
+                                                        <select class="selectpicker" name="room_number" style="width:400px; height:50px;">
                                                             <%
                                                                 String temp2 = Data.getRooms((String)session.getAttribute("hospital_id"));
                                                                 if(temp2 == "Error"){

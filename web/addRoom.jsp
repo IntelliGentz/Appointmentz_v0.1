@@ -87,7 +87,7 @@
 			                    		<input type="hidden" name="hospital_id" id="hospital_id" value="<%=session.getAttribute("hospital_id")%>">
 			                        </div>
 									
-			                        <button type="submit" id="myBtn" class="btn">Add Room</button>
+			                        <button type="submit" id="myBtn" class="btn" disabled="true">Add Room</button>
 			                    </form>
 		                    </div>
                         </div>
@@ -102,27 +102,33 @@
             
         </div>
         <script>
+            var check = 0;
             $(document).ready(function checkRoomId(){
-                $("#room_number").keyup(function(){
+                $(':input[type="submit"]').prop('disabled', true);
+                $("#room_number").keyup(function (){
+                    $(':input[type="submit"]').prop('disabled', false);
+                });
+                $("#room_number").change(function(){
+                    $("#myBtn").off("keyup");
                     $.get("checkRoomId.jsp?room_id="+$("#room_number").val(), function(data, status,response){
                         state = response.getResponseHeader("STATE");
                         if(state === "Unavailable"){
                             $("#hos_id").text("");
                             $("#form-hospital-id").css("background-color", "white");
                             $(':input[type="submit"]').prop('disabled', false);
-                            
+                            return true;
                         }
                         else if(state === "Available"){
                             $("#hos_id").text("This Room Id Already Available!");
                             $("#form-hospital-id").focus()
                             $("#form-hospital-id").css("background-color", "#ea8596");
                             $(':input[type="submit"]').prop('disabled', true);
-                            
+                            return false;
                         }
                         else{
                             $("#hos_id").text("Error occured!");
                             $(':input[type="submit"]').prop('disabled', true);
-                            
+                            return false;
                        }
 
                     });

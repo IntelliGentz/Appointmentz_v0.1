@@ -60,7 +60,7 @@ private void authenticate(String userName, String password, HttpServletRequest r
     try 
     {
         connection = DBConnection.getDBConnection().getConnection();
-        String SQL1 = "select * from appointmentzv1.hospital WHERE hospital_id = ? and password = ?";
+        String SQL1 = "select * from hospital WHERE hospital_id = ? and password = ?";
 
         preparedStatement = connection.prepareStatement(SQL1);
         preparedStatement.setString(1, userName);
