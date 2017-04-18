@@ -33,8 +33,10 @@ CREATE TABLE `rpi` (
   `serial` varchar(255) NOT NULL,
   `last_number` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`serial`),
+  FOREIGN KEY(`hospital_id`) REFERENCES room (`hospital_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   FOREIGN KEY(`room_number`) REFERENCES room (`room_number`) ON DELETE CASCADE ON UPDATE CASCADE
 );
+
 /*CREATE TABLE `rpi` (
   `room_id` int(10) unsigned NOT NULL,
   `auth` varchar(255) NOT NULL,
