@@ -57,7 +57,7 @@ public class Data {
 
         connection = DBConnection.getDBConnection().getConnection();
         //String SQL = "select room_number,room_id from appointmentz.room where hospital_id = ?";
-        String SQL = "select room_number from appointmentz.room where hospital_id = ?";
+        String SQL = "select room_number from appointmentzv1.room where hospital_id = ?";
         preparedStatement = connection.prepareStatement(SQL);
         preparedStatement.setString(1, hospital_id);
         resultSet = preparedStatement.executeQuery();
@@ -86,7 +86,7 @@ public class Data {
         {
 
         connection = DBConnection.getDBConnection().getConnection();
-        String SQL = "select * from appointmentz.room where hospital_id = ?";
+        String SQL = "select * from appointmentzv1.room where hospital_id = ?";
         preparedStatement = connection.prepareStatement(SQL);
         preparedStatement.setString(1, hospital_id);
         resultSet = preparedStatement.executeQuery();
@@ -112,7 +112,7 @@ public class Data {
         try 
         {
         connection = DBConnection.getDBConnection().getConnection();
-        String SQL = "select * from appointmentz.rpi natural join appointmentz.room where hospital_id = ?";
+        String SQL = "select * from appointmentzv1.rpi natural join appointmentzv1.room where hospital_id = ?";
         preparedStatement = connection.prepareStatement(SQL);
         preparedStatement.setString(1, hospital_id);
         resultSet = preparedStatement.executeQuery();

@@ -36,7 +36,7 @@ public class editBerry extends HttpServlet{
             String auth = req.getParameter("auth");
             String serial = req.getParameter("serial");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "update appointmentz.rpi set room_number = ? where serial= ?";
+            String SQL1 = "update appointmentzv1.rpi set room_number = ? where serial= ?";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, room_id);
             preparedStmt.setString (2, serial);

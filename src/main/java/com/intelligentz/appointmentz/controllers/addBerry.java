@@ -37,7 +37,7 @@ public class addBerry extends HttpServlet{
             String auth = req.getParameter("auth");
             String serial = req.getParameter("serial");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "insert into appointmentz.rpi ( room_number, hospital_id, auth, serial) VALUES (?,?,?,?)";
+            String SQL1 = "insert into appointmentzv1.rpi ( room_number, hospital_id, auth, serial) VALUES (?,?,?,?)";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, room_number);
             preparedStmt.setString (2, hospital_id);
