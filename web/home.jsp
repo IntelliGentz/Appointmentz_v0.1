@@ -1,4 +1,11 @@
 <%@ page session="true" %>
+<%
+    
+    if(session.getAttribute("userName")==null){
+        response.sendRedirect("./index.jsp?auth=failed");
+    }
+    
+    %>
 <!DOCTYPE html>
 <html lang="en">
 
