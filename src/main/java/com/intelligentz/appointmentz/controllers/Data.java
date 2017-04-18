@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class Data {
     
-    public static String getRooms(HttpServletResponse res, String hospital_id){
+    public static String getRooms(String hospital_id){
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         Connection connection;
@@ -42,11 +42,11 @@ public class Data {
 
         } catch (SQLException |IOException | PropertyVetoException e) {
             //throw new IllegalStateException
-            res.setHeader("Location", "error.jsp?error=MYSQL connection failed!");        
+            rooms = "Error";       
         }
         return rooms;
     }
-    public static String equipmentsGetRooms(HttpServletResponse res, String hospital_id){
+    public static String equipmentsGetRooms(String hospital_id){
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         Connection connection;
@@ -68,12 +68,12 @@ public class Data {
         }
         } catch (SQLException | IOException | PropertyVetoException e) {
         //throw new IllegalStateException
-        res.setHeader("Location", "error.jsp?error=error occured try again!"); 
+         rooms = "Error";
         }
         return rooms;
     }
     
-    public static String equipmentsGetRPI(HttpServletResponse res, String hospital_id){
+    public static String equipmentsGetRPI(String hospital_id){
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         Connection connection;
@@ -101,7 +101,8 @@ public class Data {
         }
         } catch (SQLException | IOException | PropertyVetoException e) {
         //throw new IllegalStateException
-            res.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
+            rpi = "Error";
+            
         }
         return rpi;
     }
@@ -111,7 +112,7 @@ public class Data {
         PreparedStatement preparedStatement;
         ResultSet resultSet;
         Connection connection;
-        String check = "Unavailable";
+        String check = "default";
         try 
         {
 
@@ -121,8 +122,10 @@ public class Data {
         preparedStatement.setString(1, hospital_id);
         resultSet = preparedStatement.executeQuery();
 
-        if(resultSet.next( )){
+        if(resultSet.next()){
             check = "Available";
+        }else{
+            check = "Unavailable";
         }
 
         } catch (SQLException |IOException | PropertyVetoException e) {

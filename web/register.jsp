@@ -37,6 +37,8 @@
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
         <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+        <!--<script src="assets/js/jquery.min.js"></script>-->
+        <script src="js/jquery.min.js"></script>
 
     </head>
 
@@ -48,7 +50,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 text">
-                            <h1><strong>APPointmentZ</strong> Register Form <% if(request.getParameter("error")!=null){ out.println("<p style='color:red'>"+request.getParameter("error")+"</p>");} %></h1>
+                            <h1><strong>APPointmentZ</strong> Register Form <% if(request.getParameter("register")!=null){ out.println("<p style='color:red'>"+request.getParameter("register")+"</p>");} %></h1>
                             <div class="description">
                             	<p>
 	                            	Why wait in queues. Do something you like. We will notify you. <a href=""><strong>APPointmentZ.lk</strong></a>, Join with us
@@ -68,41 +70,112 @@
                         		</div>
                             </div>
                             <div class="form-bottom">
-			                    <form role="form" action="./auth" method="post" class="login-form">
+			                    <form role="form" action="./reg" method="post" class="login-form">
 			                    	<div class="form-group">
-                                                        <p>Enter your Hospital Id:</p>
+                                                    <p>Enter your Hospital Id:</p><p style="color: red;" id="hos_id"></p>
 			                    		<label class="sr-only" for="form-username">Hospital Id</label>
-			                        	<input required type="text" onmouseout="check()" name="form-hospital-id" placeholder="Hospital Id..." class="form-username form-control" id="form-hospital-id">
+                                                        <input required type="text"  name="form-hospital-id" placeholder="Hospital Id..." class="form-username form-control" id="form-hospital-id">
 			                        </div>
 			                        <div class="form-group">
                                                         <p>Enter password:</p>
 			                        	<label class="sr-only" for="form-password">Password</label>
-			                        	<input required type="password" onmouseout="check()" name="form-password" placeholder="Password..." class="form-password form-control" id="form-password">
+			                        	<input required type="password"  name="form-password" placeholder="Password..." class="form-password form-control" id="form-password">
 			                        </div>
                                                 <div class="form-group">
                                                         <p>Re-Enter password:</p>
 			                        	<label class="sr-only" for="form-re-password">Re-Password</label>
-			                        	<input required type="password" onmouseout="check()" name="form-re-password" placeholder="Re-Password..." class="form-password form-control" id="form-re-password">
+			                        	<input required type="password"  name="form-re-password" placeholder="Re-Password..." class="form-password form-control" id="form-re-password">
 			                        </div>
                                                 <div class="form-group">
                                                         <p>Enter your Hospital Name:</p>
 			                    		<label class="sr-only" for="form-hospital-name">Hospital Name</label>
-			                        	<input required type="text" onmouseout="check()" name="form-hospital-name" placeholder="Hospital Name..." class="form-username form-control" id="form-hospital-name">
+                                                        <input required type="text" onchange="" name="form-hospital-name" placeholder="Hospital Name..." class="form-username form-control" id="form-hospital-name">
 			                        </div>
-			                        <button type="submit" onmouseover="check()" id="myBtn" class="btn" disabled>Register!</button>
+                                                <button type="submit" id="myBtn" class="btn">Register!</button>
                                                 <script>
-                                                    function check(){
+                                                    var check = 0;
+                                                    $(document).ready(function checkHospitalId(){
+                                                        $("#form-hospital-id").change(function(){
+                                                            $.get("checkHospitalId.jsp?hospital_id="+$("#form-hospital-id").val(), function(data, status,response){
+                                                                state = response.getResponseHeader("STATE");
+                                                                if(state === "Unavailable"){
+                                                                    $("#hos_id").text("");
+                                                                    $("#form-hospital-id").css("background-color", "white");
+                                                                    if($("#form-re-password").val()=== $("#form-password").val() && $("#form-re-password").val()!=="" && $("#form-password").val()!==""){
+                                                                        $("#form-re-password,#form-password").css("color","black");
+                                                                        $(':input[type="submit"]').prop('disabled', false);
+                                                                    }else{
+                                                                        $("#form-re-password,#form-password").css("color","red");
+                                                                        $(':input[type="submit"]').prop('disabled', true);
+                                                                    }
+                                                                    check = 0;
+                                                                    
+                                                                }
+                                                                else if(state === "Available"){
+                                                                    $("#hos_id").text("This Hospital Id Already Available!");
+                                                                    $("#form-hospital-id").focus()
+                                                                    $("#form-hospital-id").css("background-color", "#ea8596");
+                                                                    $(':input[type="submit"]').prop('disabled', true);
+                                                                    check = 1;
+                                                                }
+                                                                else{
+                                                                    $("#hos_id").text("Error occured!");
+                                                                    $(':input[type="submit"]').prop('disabled', true);
+                                                                    check = 1;
+                                                               }
+                                                               
+                                                                });
+                                                        });
+                                                    });
+                                                    
+                                                    $(document).ready(function checkPassword(){
+                                                        $("#form-re-password,#form-password").keyup(function(){
+                                                           
+                                                           if($("#form-re-password").val()=== $("#form-password").val() && $("#form-re-password").val()!=="" && $("#form-password").val()!==""){
+                                                               $("#form-re-password,#form-password").css("color","black");
+                                                               if(check === 0){
+                                                                    $(':input[type="submit"]').prop('disabled', false);
+                                                                }
+                                                           }else{
+                                                               $("#form-re-password,#form-password").css("color","red");
+                                                               $(':input[type="submit"]').prop('disabled', true);
+                                                           }
+                                                           
+                                                        });
+                                                    });    
+                                                    
+                                                </script>
+                                                <script>
+                                                    
+                                               /*     function check(){
                                                         if(!(document.getElementById("form-re-password").value === document.getElementById("form-password").value)){
                                                             document.getElementById("form-re-password").style.color = "red";
                                                             document.getElementById("form-password").style.color = "red";
+                                                            disableBtn();
+                                                            return false ;
+                                                        }else{
+                                                            document.getElementById("form-re-password").style.color = "black";
+                                                            document.getElementById("form-password").style.color = "black";
+                                                        }
+                                                        if(checkHospitalId()==0)
+                                                        {
+                                                            disableBtn();
+                                                            
+                                                            return false;
+                                                        }
+                                                        undisableBtn();
+                                                        return true;
+                                                    }
+                                                    function checkPassword(){
+                                                        if(!(document.getElementById("form-re-password").value === document.getElementById("form-password").value)){
+                                                            document.getElementById("form-re-password").style.color = "red";
+                                                            document.getElementById("form-password").style.color = "red";
+                                                            disableBtn();
                                                             return;
                                                         }else{
-                                                           // document.getElementById("form-re-password").style.color = "black";
-                                                            //document.getElementById("form-password").style.color = "black";
-                                                        }
-                                                        if(checkHospitalId())
-                                                        {
-                                                            undisableBtn();
+                                                            document.getElementById("form-re-password").style.color = "black";
+                                                            document.getElementById("form-password").style.color = "black";
+                                                            check();
                                                             return;
                                                         }
                                                     }
@@ -110,12 +183,13 @@
                                                         var xhttp = new XMLHttpRequest();
                                                         xhttp.onreadystatechange = function() {
                                                           if (this.readyState == 4 && this.status == 200) {
-                                                            if(this.responseText == "Unavailable"){
-                                                                document.getElementById("form-re-password").style.color = "green";
-                                                                return true;
+                                                            if(this.getResponseHeader("STATE") === "Unavailable"){
+                                                                document.getElementById("hos_id").innerHTML = "";
+                                                                return 1;
                                                             }
-                                                            document.getElementById("form-re-password").style.color = "white";
-                                                            return false;
+                                                            document.getElementById("hos_id").innerHTML = "This Hospital Id Already Available!";
+                                                            disableBtn();
+                                                            return 0;
                                                           }
                                                         };
                                                         xhttp.open("GET", "checkHospitalId.jsp?hospital_id="+document.getElementById("form-hospital-id").value, true);
@@ -124,6 +198,9 @@
                                                     function undisableBtn() {
                                                         document.getElementById("myBtn").disabled = false;
                                                     }
+                                                    function disableBtn() {
+                                                        document.getElementById("myBtn").disabled = true;
+                                                    }*/
                                                 </script>
 			                    </form>
 		                </div>
@@ -159,6 +236,9 @@
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>
         <script src="assets/js/jquery.backstretch.min.js"></script>
         <script src="assets/js/scripts.js"></script>
+        
+        <!--Jquery-->
+        
         
         <!--[if lt IE 10]>
             <script src="assets/js/placeholder.js"></script>

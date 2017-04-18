@@ -79,7 +79,13 @@
                                                         <div class="dropdown">
                                                         <select class="selectpicker" name="room_id" style="width:400px; height:50px;">
                                                             <%
-                                                                out.println(Data.getRooms(response, session.getAttribute("hospital_id")));
+                                                                String temp2 = Data.getRooms((String)session.getAttribute("hospital_id"));
+                                                                if(temp2 == "Error"){
+                                                                        response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
+                                                                }
+                                                                else{
+                                                                    out.println(temp2);
+                                                                }
                                                             %>
 
                                                         </select>

@@ -14,5 +14,5 @@ public class DatabaseConstants{
     public static String USERNAME = "root";
     public static String PASSWORD = "egodage100";
     public static String DB_URL = "jdbc:mysql://localhost:3306/";
-    public static String DB_NAME = "appointmentzV1";
+    public static String DB_NAME = "appointmentz";
 }

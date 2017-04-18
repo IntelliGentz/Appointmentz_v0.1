@@ -15,7 +15,7 @@
     </head>
     <body>
         <%
-           out.println(Data.checkHospitalId(request.getParameter("hospital_id")));
+           response.addHeader("STATE", Data.checkHospitalId(request.getParameter("hospital_id")));
         %>
     </body>
 </html>

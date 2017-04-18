@@ -36,6 +36,17 @@
         <servlet-name>auth</servlet-name>
         <url-pattern>/auth</url-pattern>
     </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>reg</servlet-name>
+        <servlet-class>com.intelligentz.appointmentz.controllers.register</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>reg</servlet-name>
+        <url-pattern>/reg</url-pattern>
+    </servlet-mapping>
+    
     <servlet>
         <servlet-name>home.jsp</servlet-name>
         <jsp-file>/home.jsp</jsp-file>

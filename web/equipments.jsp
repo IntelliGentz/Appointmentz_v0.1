@@ -73,7 +73,13 @@
 									<th></th>
 								</tr>
                                                                 <%
-                                                                out.println(Data.equipmentsGetRooms(response));
+                                                                String temp = Data.equipmentsGetRooms((String)session.getAttribute("hospital_id"));
+                                                                if(temp == "Error"){
+                                                                    response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
+                                                                }
+                                                                else{
+                                                                    out.println(temp);
+                                                                }
                                                                 %>
 								
 							
@@ -94,7 +100,13 @@
                                                                         <th></th>
 								</tr>
                                                                 <%
-                                                                 out.println(Data.equipmentsGetRPI(response));
+                                                                    String temp1 = Data.equipmentsGetRPI((String)session.getAttribute("hospital_id"));
+                                                                    if(temp1 == "Error"){
+                                                                        response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
+                                                                    }
+                                                                    else{
+                                                                        out.println(temp1);
+                                                                    }
                                                                 %>
 								
 							
