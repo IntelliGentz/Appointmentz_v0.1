@@ -110,7 +110,7 @@ public class Data {
         while(resultSet.next( )){
             //String room_id = resultSet.getString("room_id");
             String room_number = resultSet.getString("room_number");
-            rooms+="<tr><form action='./deleteRoom' method='post'><td>"+room_number+"</td><input type='hidden' name='room_number' value='"+room_number+"'>";
+            rooms+="<tr><form action='./deleteRoom' method='post'><td>"+room_number+"</td><input type='hidden' name='room_number' value='"+room_number+"'><input type='hidden' name='hospital_id' value='"+hospital_id+"'>";
             rooms+="<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the Room. Ref: Room number = "+room_number+" Related devices will also be removed.');\" style='color:red'>delete</button></td>";
             rooms+="</form></tr>";
         }
