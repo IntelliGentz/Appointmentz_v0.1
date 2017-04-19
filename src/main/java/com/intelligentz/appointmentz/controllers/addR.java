@@ -43,7 +43,7 @@ public class addR extends HttpServlet{
             String room_number = req.getParameter("room_number");
             String hospital_id = req.getParameter("hospital_id");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "insert into appointmentzv1.room ( hospital_id, room_number) VALUES (?,?)";
+            String SQL1 = "insert into room ( hospital_id, room_number) VALUES (?,?)";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, hospital_id);
             preparedStmt.setString (2, room_number);
