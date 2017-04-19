@@ -18,11 +18,11 @@ import java.util.List;
 
 /**
  * Servlet to handle File upload request from Client
- * @author Javin Paul
+ * @author Lakshan
  */
 public class UploadServlet extends HttpServlet {
-    //private final String UPLOAD_DIRECTORY = "C:/uploads";
-    private final String UPLOAD_DIRECTORY = "/media/ephemeral0/pdesilva/doclk_test/uploads";
+    private final String UPLOAD_DIRECTORY = "C:/uploads";
+    //private final String UPLOAD_DIRECTORY = "/media/ephemeral0/pdesilva/doclk_test/uploads";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)

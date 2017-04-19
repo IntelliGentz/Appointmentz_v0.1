@@ -27,15 +27,15 @@ public class DeviceController {
         Device device = null;
         try {
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "select p.room_id, p.last_number, h.id from  rpi AS p, hospital AS h WHERE p.hospital_id = h.hospital_id AND p.serial = ?";
+            String SQL1 = "select p.room_number, p.last_number, h.id from  rpi AS p, hospital AS h WHERE p.hospital_id = h.hospital_id AND p.serial = ?";
 
             preparedStatement = connection.prepareStatement(SQL1);
             preparedStatement.setString(1, device_serial);
             resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                String room_id = resultSet.getString("room_id");
+                String room_id = resultSet.getString("room_number");
                 int last_number = resultSet.getInt("last_number");
-                int hospital_id = resultSet.getInt("hospital_id");
+                int hospital_id = resultSet.getInt("id");
                 device = new Device(room_id,last_number, hospital_id);
             }
         } catch (SQLException | IOException | PropertyVetoException ex)
