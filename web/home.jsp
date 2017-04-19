@@ -87,6 +87,10 @@
 			                        <button type="submit" class="btn"><strong>Equipments</strong></button>
 			                    </form>
 								<br>
+                                <form role="form" action="./fileUpload.jsp" method="post" class="login-form">
+			                        <button type="submit" class="btn"><strong>Upload Patient List</strong></button>
+			                    </form>
+								<br>
 		                    </div>
                         </div>
                     </div>

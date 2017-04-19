@@ -34,7 +34,7 @@ public class deleteRPI extends HttpServlet{
         try {
             String serial = req.getParameter("serial");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "delete from appointmentz.rpi where serial=?";
+            String SQL1 = "delete from db_bro.rpi where serial=?";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, serial);
             // execute the preparedstatement

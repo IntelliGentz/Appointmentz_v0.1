@@ -1,10 +1,6 @@
 <%@ page session="true" %>
-<%@page import="java.sql.SQLException"%>
-<%@page import="java.sql.DriverManager"%>
-<%@page import="java.sql.Connection"%>
-<%@page import="java.sql.Statement"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="com.intelligentz.appointmentz.database.connectToDB"%>
+<%@page import="com.intelligentz.appointmentz.database.DBConnection"%>
+<%@ page import="java.sql.*" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page language="java"%>
 <!DOCTYPE html>

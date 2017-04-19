@@ -59,7 +59,7 @@ private void register(String userName, String password, String hospitalName, Htt
     try 
     {
         connection = DBConnection.getDBConnection().getConnection();
-        String SQL1 = "insert into appointmentz.hospital ( hospital_id, hospital_name, password) VALUES (?,?,?)";
+        String SQL1 = "insert into db_bro.hospital ( hospital_id, hospital_name, password) VALUES (?,?,?)";
 
         preparedStatement = connection.prepareStatement(SQL1);
         preparedStatement.setString(1, userName);

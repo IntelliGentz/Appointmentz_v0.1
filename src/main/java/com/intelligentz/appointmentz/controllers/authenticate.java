@@ -59,7 +59,7 @@ private void authenticate(String userName, String password, HttpServletRequest r
     try 
     {
         connection = DBConnection.getDBConnection().getConnection();
-        String SQL1 = "select * from appointmentz.hospital WHERE hospital_id = ? and password = ?";
+        String SQL1 = "select * from db_bro.hospital WHERE hospital_id = ? and password = ?";
 
         preparedStatement = connection.prepareStatement(SQL1);
         preparedStatement.setString(1, userName);
@@ -69,7 +69,7 @@ private void authenticate(String userName, String password, HttpServletRequest r
             String db_username = resultSet.getString("hospital_id");
             String db_hospital_name = resultSet.getString("hospital_name");
             HttpSession session = req.getSession();
-            session.setAttribute( "hospital_id", db_username );
+            session.setAttribute( "userName", db_username );
             session.setAttribute( "hospital_name", db_hospital_name);
 
             res.sendRedirect("./home");

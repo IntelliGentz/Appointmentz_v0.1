@@ -7,9 +7,9 @@
  * Author:  ndine
  * Created: 13-Nov-2016
  */
-drop database appointmentz;
-create database appointmentz;
-use appointmentz;
+drop database db_bro;
+create database db_bro;
+use db_bro;
 
 CREATE TABLE `hospital` (
   `hospital_id` varchar(255)  NOT NULL,

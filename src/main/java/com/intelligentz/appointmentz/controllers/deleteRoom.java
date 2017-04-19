@@ -35,7 +35,7 @@ public class deleteRoom extends HttpServlet{
         try {
             String room_id = req.getParameter("room_id");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "delete from appointmentz.room where room_id=?";
+            String SQL1 = "delete from db_bro.room where room_id=?";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, room_id);
             // execute the preparedstatement
