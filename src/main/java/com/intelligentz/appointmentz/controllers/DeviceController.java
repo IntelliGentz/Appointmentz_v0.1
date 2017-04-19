@@ -58,7 +58,7 @@ public class DeviceController {
 
             preparedStatement = connection.prepareStatement(SQL1);
             preparedStatement.setInt(1, last_number);
-            preparedStatement.setString(1, serial);
+            preparedStatement.setString(2, serial);
             preparedStatement.executeUpdate();
         } catch (SQLException | IOException | PropertyVetoException ex)
         {

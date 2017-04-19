@@ -83,7 +83,7 @@
                             <div class="form-group">
                                 <label class="sr-only" for="form-username"></label>
                                 <p>Data File:</p>
-                                <input type="file" name="file" placeholder="Patients" class="form-username form-control" id="">
+                                <input type="file" name="file" placeholder="Patients" class="form-username form-control" id="file-upload">
                             </div>
                             <div class="form-group">
                                 <input type="hidden" name="hospital_id" id="" value="<%=session.getAttribute("hospital_id")%>">

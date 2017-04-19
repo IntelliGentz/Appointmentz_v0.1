@@ -11,8 +11,8 @@ package com.intelligentz.appointmentz.database;
  */
 public class DatabaseConstants{
     public static String DRIVER = "com.mysql.jdbc.Driver";
-    public static String USERNAME = "root";
-    public static String PASSWORD = "luckygrox";
+    public static String USERNAME = "pdesilva";
+    public static String PASSWORD = "6935!LVa";
     public static String DB_URL = "jdbc:mysql://localhost:3306/";
     public static String DB_NAME = "db_bro";
 }

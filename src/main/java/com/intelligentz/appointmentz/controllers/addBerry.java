@@ -47,6 +47,8 @@ public class addBerry extends HttpServlet{
             preparedStmt.setString (4, serial);
             // execute the preparedstatement
             preparedStmt.execute();
+
+
             res.sendRedirect("./home");
         }
         catch (SQLException | PropertyVetoException ex) {

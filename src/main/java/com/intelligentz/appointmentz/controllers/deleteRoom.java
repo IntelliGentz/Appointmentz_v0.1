@@ -37,7 +37,7 @@ public class deleteRoom extends HttpServlet{
             String room_number = req.getParameter("room_number");
             String hospital_id = req.getParameter("hospital_id");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "delete from room where (room_number,hospital_id) in ((?,?))";
+            String SQL1 = "delete from room where room_number = ? AND hospital_id = ?";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, room_number);
             preparedStmt.setString (2, hospital_id);
