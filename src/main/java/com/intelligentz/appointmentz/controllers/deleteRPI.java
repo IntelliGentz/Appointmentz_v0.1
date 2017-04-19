@@ -9,6 +9,7 @@ import com.intelligentz.appointmentz.database.DBConnection;
 import java.beans.PropertyVetoException;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.dbutils.DbUtils;
 
 /**
  *
@@ -24,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
 
 public class deleteRPI extends HttpServlet{  
     private static PreparedStatement preparedStmt;
-    //private static ResultSet resultSet;
+    private static ResultSet resultSet;
     private static java.sql.Connection connection;
     private static final Logger LOGGER = Logger.getLogger( deleteRPI.class.getName() );
     
@@ -34,7 +36,7 @@ public class deleteRPI extends HttpServlet{
         try {
             String serial = req.getParameter("serial");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "delete from db_bro.rpi where serial=?";
+            String SQL1 = "delete from rpi where serial=?";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, serial);
             // execute the preparedstatement
@@ -45,5 +47,15 @@ public class deleteRPI extends HttpServlet{
             LOGGER.log(Level.SEVERE, null, ex);
             res.sendRedirect("./error.jsp?error=Error in delettiing device!\n+"+ex.toString()+"");
         }  
+        finally 
+        {
+            try {
+            DbUtils.closeQuietly(resultSet);
+            DbUtils.closeQuietly(preparedStmt);
+            DbUtils.close(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(register.class.getName()).log(Level.SEVERE, ex.toString(), ex);
+            }
+        }
     }
 }  

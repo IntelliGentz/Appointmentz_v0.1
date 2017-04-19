@@ -10,6 +10,7 @@ import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+//import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.dbutils.DbUtils;
 
 /**
  *
@@ -32,15 +34,17 @@ public class addBerry extends HttpServlet{
     public void doPost(HttpServletRequest req,HttpServletResponse res)  throws ServletException,IOException  
     {  
         try {
-            String room_id = req.getParameter("room_id");
+            String room_number = req.getParameter("room_number");
+            String hospital_id = req.getParameter("hospital_id");
             String auth = req.getParameter("auth");
             String serial = req.getParameter("serial");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "insert into db_bro.rpi ( room_id, auth, serial) VALUES (?,?,?)";
+            String SQL1 = "insert into rpi ( room_number, hospital_id, auth, serial) VALUES (?,?,?,?)";
             preparedStmt = connection.prepareStatement(SQL1);
-            preparedStmt.setString (1, room_id);
-            preparedStmt.setString (2, auth);
-            preparedStmt.setString (3, serial);
+            preparedStmt.setString (1, room_number);
+            preparedStmt.setString (2, hospital_id);
+            preparedStmt.setString (3, auth);
+            preparedStmt.setString (4, serial);
             // execute the preparedstatement
             preparedStmt.execute();
             res.sendRedirect("./home");
@@ -48,6 +52,16 @@ public class addBerry extends HttpServlet{
         catch (SQLException | PropertyVetoException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
             res.sendRedirect("./error.jsp?error=Error in adding device!\n+"+ex.toString()+"");
+        }
+        finally 
+        {
+            try {
+            //DbUtils.closeQuietly(resultSet);
+            DbUtils.closeQuietly(preparedStmt);
+            DbUtils.close(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(register.class.getName()).log(Level.SEVERE, ex.toString(), ex);
+            }
         }
     }
 }  

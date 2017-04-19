@@ -52,6 +52,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>editBerry</servlet-name>
+        <servlet-class>com.intelligentz.appointmentz.controllers.editBerry</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>editBerry</servlet-name>
+        <url-pattern>/editBerry</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>addR</servlet-name>
         <servlet-class>com.intelligentz.appointmentz.controllers.addR</servlet-class>
     </servlet>
@@ -111,7 +120,7 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>editRPI.jsp</servlet-name>
-        <url-pattern>/edit</url-pattern>
+        <url-pattern>/editRPI</url-pattern>
     </servlet-mapping>
     
     <servlet>

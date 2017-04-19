@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.commons.dbutils.DbUtils;
 
 /**
  *
@@ -33,9 +34,9 @@ public class deleteRoom extends HttpServlet{
     public void doPost(HttpServletRequest req,HttpServletResponse res)  throws ServletException,IOException  
     {  
         try {
-            String room_id = req.getParameter("room_id");
+            String room_id = req.getParameter("room_number");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "delete from db_bro.room where room_id=?";
+            String SQL1 = "delete from room where room_number=?";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, room_id);
             // execute the preparedstatement
@@ -46,5 +47,15 @@ public class deleteRoom extends HttpServlet{
             LOGGER.log(Level.SEVERE, null, ex);
             res.sendRedirect("./error.jsp?error=Error in deletting room!\n+"+ex.toString()+"");
         }  
+        finally 
+        {
+            try {
+            //DbUtils.closeQuietly(resultSet);
+            DbUtils.closeQuietly(preparedStmt);
+            DbUtils.close(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(register.class.getName()).log(Level.SEVERE, ex.toString(), ex);
+            }
+        }
     }
 }

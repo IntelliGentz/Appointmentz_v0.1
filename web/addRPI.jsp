@@ -2,6 +2,13 @@
 <%@page import="com.intelligentz.appointmentz.controllers.Data"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page language="java"%>
+<%
+    
+    if(session.getAttribute("hospital_id")==null || session.getAttribute("hospital_name")==null){
+        response.sendRedirect("./index.jsp?auth=failed");
+    }
+    
+    %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -54,7 +61,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 text">
-                            <h1><strong>APPointmentZ</strong> Add RPI</h1>
+                            <h1><strong>APPointmentZ</strong> Add Device</h1>
                             <div class="description">
                             	<!--<p>
 	                            	Why wait in queues. Do something you like. We will notify you. <a href=""><strong>APPointmentZ.lk</strong></a>, Join with us
@@ -66,8 +73,8 @@
                         <div class="col-sm-6 col-sm-offset-3 form-box">
                         	<div class="form-top">
                         		<div class="form-top-left">
-                        			<h3>Use this form to add RPI</h3>
-                            		<p>Enter the information of RPI to subscribe to the service:</p>
+                        			<h3>Use this form to add Device</h3>
+                            		<p>Enter the information of Device to subscribe to the service:</p>
                         		</div>
                             </div>
                             <div class="form-bottom">
@@ -77,7 +84,7 @@
 										<p>Room Number:</p>
 			                        	<!--<input type="text" name="form-password" placeholder="RPI Id... or Counter Number" class="form-password form-control" id="form-password">-->
                                                         <div class="dropdown">
-                                                        <select class="selectpicker" name="room_id" style="width:400px; height:50px;">
+                                                        <select class="selectpicker" name="room_number" style="width:400px; height:50px;">
                                                             <%
                                                                 String temp2 = Data.getRooms((String)session.getAttribute("hospital_id"));
                                                                 if(temp2 == "Error"){
@@ -96,12 +103,13 @@
 										<p>Serial Number:</p>
 			                        	<input type="text" name="serial" placeholder="Serial Number..." class="form-username form-control" id="form-username">
 			                        </div>
+                                                            <input type="hidden" name="hospital_id" id="" value="<%=session.getAttribute("hospital_id")%>">
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-password"></label>
 										<p>Auth code:</p>
 			                        	<input type="text" name="auth" placeholder="Auth code..." class="form-password form-control" id="form-password">
 			                        </div>
-			                        <button type="submit" class="btn">Add RPI</button>
+			                        <button type="submit" class="btn">Add Device</button>
 			                    </form>
 		                    </div>
                         </div>

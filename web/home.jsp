@@ -1,7 +1,7 @@
 <%@ page session="true" %>
 <%
     
-    if(session.getAttribute("userName")==null){
+    if(session.getAttribute("hospital_id")==null || session.getAttribute("hospital_name")==null){
         response.sendRedirect("./index.jsp?auth=failed");
     }
     
