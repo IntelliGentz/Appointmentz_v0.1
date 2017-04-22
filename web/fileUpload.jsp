@@ -88,7 +88,8 @@
                             <div class="form-group">
                                 <input type="hidden" name="hospital_id" id="" value="<%=session.getAttribute("hospital_id")%>">
                             </div>
-                            <button type="submit" class="btn" value="upload">Upload</button>
+                            <button type="submit" class="btn" style="display:inline; width:62%; margin-right:2%" value="upload">Upload</button>
+                            <button type="button" class="btn" style="display:inline; width:35%;" onClick="window.location.assign('home.jsp')">Back</button>
                         </form>
                     </div>
                 </div>

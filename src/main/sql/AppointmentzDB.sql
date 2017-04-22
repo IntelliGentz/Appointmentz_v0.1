@@ -12,7 +12,7 @@ create database db_bro;
 use db_bro;
 
 CREATE TABLE `hospital` (
-  `id` int NOT NULL UNIQUE AUTO_INCREMENT,
+  `id` int NOT NULL UNIQUE,
   `hospital_id` varchar(255)  NOT NULL,
   `hospital_name` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
@@ -20,21 +20,20 @@ CREATE TABLE `hospital` (
 );
 
 CREATE TABLE `room` (
+  `room_id` int NOT NULL UNIQUE AUTO_INCREMENT,
   `room_number` varchar(255) NOT NULL,
   `hospital_id` varchar(255) NOT NULL,
-  PRIMARY KEY (`room_number`,`hospital_id`),
+  PRIMARY KEY (`room_id`),
   FOREIGN KEY(`hospital_id`) REFERENCES hospital (`hospital_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE `rpi` (
-  `room_number` varchar(255) NOT NULL,
-  `hospital_id` varchar(255)  NOT NULL,
+  `room_id` int NOT NULL UNIQUE,
   `auth` varchar(255) NOT NULL,
   `serial` varchar(255) NOT NULL,
   `last_number` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`serial`),
-  FOREIGN KEY(`hospital_id`) REFERENCES room (`hospital_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  FOREIGN KEY(`room_number`) REFERENCES room (`room_number`) ON DELETE CASCADE ON UPDATE CASCADE
+  FOREIGN KEY(`room_id`) REFERENCES room (`room_id`) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 /*CREATE TABLE `rpi` (

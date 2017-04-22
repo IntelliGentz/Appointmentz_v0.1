@@ -8,7 +8,7 @@
         response.sendRedirect("./index.jsp?auth=failed");
     }
     
-    %>
+%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -68,6 +68,12 @@
                             	</p>-->
                                 <p>Info about equipment</p>
                             </div>
+                            <div class="description">
+                            	
+	                        <% if(request.getParameter("status")!=null){ out.println("<p style='color:green; background-color:white; font-size:18px;'><strong>"+request.getParameter("status")+"</strong></p>");} %>
+                            	
+                            </div>
+                                
                         </div>
                     </div>
                     <div class="row" style="color:white">
@@ -76,6 +82,7 @@
                         <table class="table table-bordered table-inverse">
 								<tr>
                                                                         <th>Room Number</th>
+                                                                        <th>Room Id</th>
 									<th></th>
 								</tr>
                                                                 <%
@@ -101,6 +108,7 @@
 									<th>Auth</th>
 									<th>Serial</th>
 									<th>Room Number</th>
+                                                                        <th>Room Id</th>
 									<th></th>
                                                                         <th></th>
 								</tr>
@@ -118,7 +126,7 @@
 						</table>
 					</center>
                     </div>
-                                                                
+                    <div><button type="button" class="btn" style="display:inline; position:absolute; right:10%; width:10%;" onClick="window.location.assign('home.jsp')">Back</button></div>                                            
                     <div class="row">
                         <div class="col-sm-6 col-sm-offset-3 social-login">
                         	<h3>Get notified before your appointment</h3>

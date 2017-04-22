@@ -33,17 +33,18 @@ public class editBerry extends HttpServlet{
     public void doPost(HttpServletRequest req,HttpServletResponse res)  throws ServletException,IOException  
     {  
         try {
-            String room_id = req.getParameter("room_number");
-            String auth = req.getParameter("auth");
-            String serial = req.getParameter("serial");
+            String room_id = req.getParameter("room_id");
+            //String room_number = req.getParameter("room_number");
+            String auth = req.getParameter("auth_hidden");
+            String serial = req.getParameter("serial_hidden");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "update rpi set room_number = ? where serial= ?";
+            String SQL1 = "update rpi set room_id = ? where serial= ?";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, room_id);
             preparedStmt.setString (2, serial);
             // execute the preparedstatement
             preparedStmt.execute();
-            res.sendRedirect("./home");
+            res.sendRedirect("./equipments?status=Successfully Updated Device Details Serial:"+serial+" -> Room_id:"+room_id);
         }
         catch (SQLException | PropertyVetoException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

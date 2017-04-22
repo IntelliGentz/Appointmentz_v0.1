@@ -80,14 +80,15 @@
 			                    <form role="form" action="./addR" method="post" class="login-form">
 									<div class="form-group">
 			                    		<label class="sr-only" for="form-username"></label>
-										<p>Room Number:</p><p style="color: red;" id="hos_id"></p>
-			                        	<input type="text" name="room_number" id="room_number" placeholder="Room Number" class="form-username form-control" >
+										<p>Room Number:</p><p style="color: red;" id="hos_id"><% if(request.getParameter("status")!=null){ out.println(request.getParameter("status"));} %></p>
+			                        	<input type="text" <% if(request.getParameter("status")!=null){ out.println("style=\"background-color:#ea8596\" value=\""+request.getParameter("room_number")+"\"");} %> name="room_number" id="room_number" placeholder="Room Number" required class="form-username form-control" >
 			                        </div>
 			                    	<div class="form-group">
 			                    		<input type="hidden" name="hospital_id" id="hospital_id" value="<%=session.getAttribute("hospital_id")%>">
 			                        </div>
 									
-			                        <button type="submit" id="myBtn" class="btn" disabled="true">Add Room</button>
+			                        <button type="submit" id="myBtn" style="display:inline; width:62%; margin-right:2%" class="btn" disabled="true">Add Room</button>
+                                                <button type="button" class="btn" style="display:inline; width:35%;" onClick="window.location.assign('home.jsp')">Back</button>
 			                    </form>
 		                    </div>
                         </div>
@@ -107,6 +108,8 @@
                 $(':input[type="submit"]').prop('disabled', true);
                 $("#room_number").keyup(function (){
                     $(':input[type="submit"]').prop('disabled', false);
+                    $("#hos_id").text("");
+                    $("#room_number").css("background-color", "white");
                 });
                 $("#room_number").change(function(){
                     $("#myBtn").off("keyup");
@@ -114,14 +117,14 @@
                         state = response.getResponseHeader("STATE");
                         if(state === "Unavailable"){
                             $("#hos_id").text("");
-                            $("#form-hospital-id").css("background-color", "white");
+                            $("#room_number").css("background-color", "white");
                             $(':input[type="submit"]').prop('disabled', false);
                             return true;
                         }
                         else if(state === "Available"){
                             $("#hos_id").text("This Room Id Already Available!");
-                            $("#form-hospital-id").focus()
-                            $("#form-hospital-id").css("background-color", "#ea8596");
+                            $("#room_number").focus()
+                            $("#room_number").css("background-color", "#ea8596");
                             $(':input[type="submit"]').prop('disabled', true);
                             return false;
                         }

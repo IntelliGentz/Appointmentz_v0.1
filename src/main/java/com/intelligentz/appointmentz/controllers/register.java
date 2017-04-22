@@ -48,23 +48,25 @@ public class register extends HttpServlet{
             final String password = new String(Hex.encodeHex(resultByte));
             
             String userName = req.getParameter("form-hospital-id");
+            String id = req.getParameter("form-id");
             //String password = req.getParameter("form-password");
             String hospitalName = req.getParameter("form-hospital-name");
-            register(userName,password,hospitalName,req,res);
+            register(id,userName,password,hospitalName,req,res);
             
     }
     
-private void register(String userName, String password, String hospitalName, HttpServletRequest req,HttpServletResponse res) throws IOException{
+private void register(String id,String userName, String password, String hospitalName, HttpServletRequest req,HttpServletResponse res) throws IOException{
     boolean status = false;
     try 
     {
         connection = DBConnection.getDBConnection().getConnection();
-        String SQL1 = "insert into hospital ( hospital_id, hospital_name, password) VALUES (?,?,?)";
+        String SQL1 = "insert into hospital (id,hospital_id, hospital_name, password) VALUES (?,?,?,?)";
 
         preparedStatement = connection.prepareStatement(SQL1);
-        preparedStatement.setString(1, userName);
-        preparedStatement.setString(2, hospitalName);
-        preparedStatement.setString(3, password);
+        preparedStatement.setString(1, id);
+        preparedStatement.setString(2, userName);
+        preparedStatement.setString(3, hospitalName);
+        preparedStatement.setString(4, password);
         preparedStatement.executeUpdate();
         
         res.sendRedirect("./index.jsp?register=successfully registered");

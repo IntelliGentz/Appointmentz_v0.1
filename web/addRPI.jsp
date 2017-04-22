@@ -39,6 +39,7 @@
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
         <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+        <script src="js/jquery.min.js"></script>
 
     </head>
 
@@ -84,9 +85,15 @@
 										<p>Room Number:</p>
 			                        	<!--<input type="text" name="form-password" placeholder="RPI Id... or Counter Number" class="form-password form-control" id="form-password">-->
                                                         <div class="dropdown">
-                                                        <select class="selectpicker" name="room_number" style="width:400px; height:50px;">
+                                                        <select class="selectpicker" name="room_id" style="width:400px; height:50px;">
                                                             <%
-                                                                String temp2 = Data.getRooms((String)session.getAttribute("hospital_id"));
+                                                                String temp2 = "";
+                                                                if(request.getParameter("status")!=null) {
+                                                                    temp2 = Data.getRooms((String)session.getAttribute("hospital_id"),(String)request.getParameter("room_id"));
+                                                                }
+                                                                else{
+                                                                    temp2 = Data.getRooms((String)session.getAttribute("hospital_id"));
+                                                                }
                                                                 if(temp2 == "Error"){
                                                                         response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
                                                                 }
@@ -100,17 +107,56 @@
 			                        </div>
 			                    	<div class="form-group">
 			                    		<label class="sr-only" for="form-username"></label>
-										<p>Serial Number:</p>
-			                        	<input type="text" name="serial" placeholder="Serial Number..." class="form-username form-control" id="form-username">
+										<p>Serial Number:</p><p style="color: red;" id="hos_id"><% if(request.getParameter("status")!=null){ out.println(request.getParameter("status"));} %></p>
+			                        	<input type="text" name="serial" <% if(request.getParameter("status")!=null){ out.println("style=\"background-color:#ea8596\" value=\""+request.getParameter("serial")+"\"");} %>  placeholder="Serial Number..." class="form-username form-control" required id="serial">
 			                        </div>
-                                                            <input type="hidden" name="hospital_id" id="" value="<%=session.getAttribute("hospital_id")%>">
+                                                            <input type="hidden" name="hospital_id" id="hospital_id" name="hospital_id" value="<%=session.getAttribute("hospital_id")%>">
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-password"></label>
 										<p>Auth code:</p>
-			                        	<input type="text" name="auth" placeholder="Auth code..." class="form-password form-control" id="form-password">
+			                        	<input type="text" name="auth" <% if(request.getParameter("status")!=null){ out.println("style=\"background-color:#ea8596\" value=\""+request.getParameter("auth")+"\"");} %>  placeholder="Auth code..." class="form-password form-control" required id="auth">
 			                        </div>
-			                        <button type="submit" class="btn">Add Device</button>
-			                    </form>
+			                        <button type="submit" id="myBtn" style="display:inline; width:62%; margin-right:2%" class="btn">Add Device</button>
+                                                <button type="button" class="btn" style="display:inline; width:35%;" onClick="window.location.assign('home.jsp')">Back</button>
+			                    
+                                                <script>
+                                                    $(document).ready(function checkSerialAuth(){
+                                                        $(':input[type="submit"]').prop('disabled', true);
+                                                        $("#serial,#auth").keyup(function (){
+                                                            $(':input[type="submit"]').prop('disabled', false);
+                                                            $("#hos_id").text("");
+                                                            $("#serial,#auth").css("background-color", "white");
+                                                        });
+                                                        $("#serial,#auth").change(function(){
+                                                            $("#myBtn").off("keyup");
+                                                            $.get("checkSerialAuth.jsp?serial="+$("#serial").val()+"&auth="+$("#auth").val(), function(data, status,response){
+                                                                state = response.getResponseHeader("STATE");
+                                                                if(state === "Unavailable"){
+                                                                    $("#hos_id").text("");
+                                                                    $("#serial,#auth").css("background-color", "white");
+                                                                    $(':input[type="submit"]').prop('disabled', false);
+                                                                    return true;
+                                                                }
+                                                                else if(state === "Available"){
+                                                                    $("#hos_id").text("This Serial Or Auth Already Available!");
+                                                                    $("#serial").focus()
+                                                                    $("#serial,#auth").css("background-color", "#ea8596");
+                                                                    $(':input[type="submit"]').prop('disabled', true);
+                                                                    return false;
+                                                                }
+                                                                else{
+                                                                    $("#hos_id").text("Error occured!");
+                                                                    $(':input[type="submit"]').prop('disabled', true);
+                                                                    return false;
+                                                               }
+
+                                                            });
+                                                        });
+                                                    });    
+
+                                                </script>
+                                            
+                                            </form>
 		                    </div>
                         </div>
                     </div>
@@ -123,8 +169,9 @@
             </div>
             
         </div>
-
-
+        
+        
+                                                    
         <!-- Javascript -->
         <script src="assets/js/jquery-1.11.1.min.js"></script>
         <script src="assets/bootstrap/js/bootstrap.min.js"></script>

@@ -78,7 +78,7 @@ private void authenticate(String userName, String password, HttpServletRequest r
         else{
             
             session.invalidate();
-            res.sendRedirect("./index.jsp?auth=failed");
+            res.sendRedirect("./index.jsp?auth=Authentication Failed");
         
         }
 

@@ -62,6 +62,11 @@
 	                            	Why wait in queues. Do something you like. We will notify you. <a href=""><strong>APPointmentZ.lk</strong></a>, Join with us
                             	</p>
                             </div>
+                            <div class="description">
+                            	
+	                        <% if(request.getParameter("status")!=null){ out.println("<p style='color:green; background-color:white; font-size:18px;'><strong>"+request.getParameter("status")+"</strong></p>");} %>
+                            	
+                            </div>
                         </div>
                         <div class="col-sm-6 col-sm-offset-3 form-box">
                         	<div class="form-top">

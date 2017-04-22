@@ -43,13 +43,24 @@ public class addR extends HttpServlet{
             String room_number = req.getParameter("room_number");
             String hospital_id = req.getParameter("hospital_id");
             connection = DBConnection.getDBConnection().getConnection();
+            String SQL12 = "select room_number from room where room_number=? and hospital_id=?";
+            preparedStmt = connection.prepareStatement(SQL12);
+            preparedStmt.setString (1, room_number);
+            preparedStmt.setString (2, hospital_id);
+            // execute the preparedstatement
+            resultSet = preparedStmt.executeQuery();
+            if(resultSet.next()){
+                res.sendRedirect("./addRoom.jsp?status=This Room Number Already Available!&room_number="+room_number);
+                return;
+            }
+            
             String SQL1 = "insert into room ( hospital_id, room_number) VALUES (?,?)";
             preparedStmt = connection.prepareStatement(SQL1);
             preparedStmt.setString (1, hospital_id);
             preparedStmt.setString (2, room_number);
             // execute the preparedstatement
             preparedStmt.execute();
-            res.sendRedirect("./home");
+            res.sendRedirect("./home?status=Room successfully added!");
         }
         catch (SQLException | PropertyVetoException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

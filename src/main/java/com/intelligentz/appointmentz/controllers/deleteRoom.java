@@ -34,16 +34,16 @@ public class deleteRoom extends HttpServlet{
     public void doPost(HttpServletRequest req,HttpServletResponse res)  throws ServletException,IOException  
     {  
         try {
+            String room_id = req.getParameter("room_id");
             String room_number = req.getParameter("room_number");
             String hospital_id = req.getParameter("hospital_id");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "delete from room where room_number = ? AND hospital_id = ?";
+            String SQL1 = "delete from room where room_id = ?";
             preparedStmt = connection.prepareStatement(SQL1);
-            preparedStmt.setString (1, room_number);
-            preparedStmt.setString (2, hospital_id);
+            preparedStmt.setString (1, room_id);
             // execute the preparedstatement
             preparedStmt.execute();
-            res.sendRedirect("./equipments");
+            res.sendRedirect("./equipments?status=Successfully Deleted Room_number:"+room_number+" Room_id:"+room_id);
         }
         catch (SQLException | PropertyVetoException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

@@ -15,12 +15,7 @@
     </head>
     <body>
         <%
-           if(request.getParameter("sel").equals("0")) {
-                response.addHeader("STATE", Data.checkHospitalId((String)request.getParameter("hospital_id"),0));
-           }
-           else if(request.getParameter("sel").equals("1")) {
-                response.addHeader("STATE", Data.checkHospitalId((String)request.getParameter("id"),1));
-           }
+                response.addHeader("STATE", Data.checkSerialAuth((String)request.getParameter("serial"),(String)request.getParameter("auth")));
         %>
     </body>
 </html>

@@ -10,6 +10,7 @@ import java.beans.PropertyVetoException;
 import java.sql.Connection;
 import java.io.IOException;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 //import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -26,7 +27,7 @@ import org.apache.commons.dbutils.DbUtils;
  */
 public class addBerry extends HttpServlet{  
     private static PreparedStatement preparedStmt;
-    //private static ResultSet resultSet;
+    private static ResultSet resultSet;
     private static Connection connection;
     private static final Logger LOGGER = Logger.getLogger( addBerry.class.getName() );
     
@@ -34,22 +35,32 @@ public class addBerry extends HttpServlet{
     public void doPost(HttpServletRequest req,HttpServletResponse res)  throws ServletException,IOException  
     {  
         try {
-            String room_number = req.getParameter("room_number");
-            String hospital_id = req.getParameter("hospital_id");
+            String room_id = req.getParameter("room_id");
             String auth = req.getParameter("auth");
             String serial = req.getParameter("serial");
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "insert into rpi ( room_number, hospital_id, auth, serial) VALUES (?,?,?,?)";
+            String SQL12 = "select serial,auth from rpi where serial=? or auth=?";
+            preparedStmt = connection.prepareStatement(SQL12);
+            preparedStmt.setString (1, serial);
+            preparedStmt.setString (2, auth);
+            // execute the preparedstatement
+            resultSet = preparedStmt.executeQuery();
+            if(resultSet.next()){
+                res.sendRedirect("./addRPI.jsp?status=This Serial Number Or Auth Already Available&serial="+serial+"&auth="+auth+"&room_id="+room_id);
+                return;
+            }
+            
+           
+            String SQL1 = "insert into rpi ( room_id, auth, serial) VALUES (?,?,?)";
             preparedStmt = connection.prepareStatement(SQL1);
-            preparedStmt.setString (1, room_number);
-            preparedStmt.setString (2, hospital_id);
-            preparedStmt.setString (3, auth);
-            preparedStmt.setString (4, serial);
+            preparedStmt.setString (1, room_id);
+            preparedStmt.setString (2, auth);
+            preparedStmt.setString (3, serial);
             // execute the preparedstatement
             preparedStmt.execute();
 
 
-            res.sendRedirect("./home");
+            res.sendRedirect("./home?status=Device successfully added!");
         }
         catch (SQLException | PropertyVetoException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

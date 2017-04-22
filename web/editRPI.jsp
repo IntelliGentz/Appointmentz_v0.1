@@ -39,6 +39,7 @@
         <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
         <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+        <script src="js/jquery.min.js"></script>
 
     </head>
 
@@ -84,9 +85,9 @@
 										<p>Room Number:</p>
 			                        	<!--<input type="text" name="form-password" placeholder="RPI Id... or Counter Number" class="form-password form-control" id="form-password">-->
                                                         <div class="dropdown">
-                                                        <select class="selectpicker" name="room_id" style="width:400px; height:50px;">
+                                                        <select class="selectpicker" name="room_id" id="room_id" style="width:400px; height:50px;">
                                                             <%
-                                                                String temp2 = Data.getRooms((String)session.getAttribute("hospital_id"),(String)request.getParameter("room_number"));
+                                                                String temp2 = Data.getRooms((String)session.getAttribute("hospital_id"),(String)request.getParameter("room_id"));
                                                                 if(temp2 == "Error"){
                                                                         response.setHeader("Location", "error.jsp?error=MYSQL connection failed!"); 
                                                                 }
@@ -101,16 +102,36 @@
 			                    	<div class="form-group">
 			                    		<label class="sr-only" for="form-username"></label>
 										<p>Serial Number:</p>
-			                        	<input disabled type="text" name="serial" placeholder="Serial Number..." class="form-username form-control" value="<%=request.getParameter("serial")%>" id="form-username">
-			                        </div>
+			                        	<input disabled type="text" name="serial" placeholder="Serial Number..." class="form-username form-control" value="<%=request.getParameter("serial")%>" id="serial">
+                                                        <input type="hidden" name="serial_hidden" value="<%=request.getParameter("serial")%>">
+                                                </div>
 			                        <div class="form-group">
 			                        	<label class="sr-only" for="form-password"></label>
 										<p>Auth code:</p>
-			                        	<input disabled type="text" name="auth" placeholder="Auth code..." class="form-password form-control" value="<%=request.getParameter("auth")%>" id="form-password">
-			                        </div>
-			                        <button type="submit" class="btn">Update values</button>
-                                                <button type="button" class="btn" onClick="window.location.assign('equipments.jsp')">Back</button>
+			                        	<input disabled type="text" name="auth" placeholder="Auth code..." class="form-password form-control" value="<%=request.getParameter("auth")%>" id="auth">
+                                                        <input type="hidden" name="auth_hidden" value="<%=request.getParameter("auth")%>">
+                                                </div>
                                                 
+			                        <button type="submit" class="btn" style="display:inline; width:62%; margin-right:2%" >Update values</button>
+                                                <button type="button" class="btn" style="display:inline; width:35%;" onClick="window.location.assign('equipments.jsp')">Back</button>
+                                                <script>
+                                                    $(document).ready(function checkChangeInRoomId(){
+                                                        $(':input[type="submit"]').prop('disabled', true);
+                                                        //$("#serial,#auth").css("background-color", "blue");
+                                                        $("#room_id").click(function (){
+                                                            
+                                                            if($("#room_id option:selected").val()===<% out.println("\""+(String)request.getParameter("room_id")+"\"");%>){
+                                                                $(':input[type="submit"]').prop('disabled', true);
+                                                                //$("#room_id").css("background-color", "green");
+                                                            }
+                                                            else{
+                                                                $(':input[type="submit"]').prop('disabled', false);
+                                                                //$("#room_id").css("background-color", "red");
+                                                            }
+                                                        });
+                                                    });    
+
+                                                </script>
 			                    </form>
 		                    </div>
                         </div>

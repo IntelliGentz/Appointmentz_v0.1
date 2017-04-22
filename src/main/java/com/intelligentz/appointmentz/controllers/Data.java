@@ -33,15 +33,16 @@ public class Data {
 
         connection = DBConnection.getDBConnection().getConnection();
         //String SQL = "select room_number,room_id from room where hospital_id = ?";
-        String SQL = "select room_number from room where hospital_id = ?";
+        String SQL = "select room_number,room_id from room where hospital_id = ?";
         preparedStatement = connection.prepareStatement(SQL);
         preparedStatement.setString(1, hospital_id);
         resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next( )){
             String room_number = resultSet.getString("room_number");
+            String room_id = resultSet.getString("room_id");
             //String room_id = resultSet.getString("room_id");
-            rooms+="<option value=\""+room_number+"\">"+room_number+"</option>";
+            rooms+="<option value=\""+room_id+"\">"+room_number+"</option>";
         }
 
         } catch (SQLException |IOException | PropertyVetoException e) {
@@ -60,25 +61,25 @@ public class Data {
         }
         return rooms;
     }
-    public static String getRooms(String hospital_id,String room_number_default){
+    public static String getRooms(String hospital_id,String room_id_default){
         String rooms = "";
         try 
         {
 
         connection = DBConnection.getDBConnection().getConnection();
         //String SQL = "select room_number,room_id from room where hospital_id = ?";
-        String SQL = "select room_number from room where hospital_id = ?";
+        String SQL = "select room_number,room_id from room where hospital_id = ?";
         preparedStatement = connection.prepareStatement(SQL);
         preparedStatement.setString(1, hospital_id);
         resultSet = preparedStatement.executeQuery();
 
         while(resultSet.next( )){
             String room_number = resultSet.getString("room_number");
-            //String room_id = resultSet.getString("room_id");
-            if(room_number_default.equals(room_number))
-                rooms+="<option selected=\"selected\" value=\""+room_number+"\">"+room_number+"</option>";
+            String room_id = resultSet.getString("room_id");
+            if(room_id_default.equals(room_id))
+                rooms+="<option selected=\"selected\" value=\""+room_id+"\">"+room_number+"</option>";
             else    
-                rooms+="<option value=\""+room_number+"\">"+room_number+"</option>";
+                rooms+="<option value=\""+room_id+"\">"+room_number+"</option>";
         }
 
         } catch (SQLException |IOException | PropertyVetoException e) {
@@ -101,19 +102,18 @@ public class Data {
         String rooms = "";
         try 
         {
-
-        connection = DBConnection.getDBConnection().getConnection();
-        String SQL = "select * from room where hospital_id = ?";
-        preparedStatement = connection.prepareStatement(SQL);
-        preparedStatement.setString(1, hospital_id);
-        resultSet = preparedStatement.executeQuery();
-        while(resultSet.next( )){
-            //String room_id = resultSet.getString("room_id");
-            String room_number = resultSet.getString("room_number");
-            rooms+="<tr><form action='./deleteRoom' method='post'><td>"+room_number+"</td><input type='hidden' name='room_number' value='"+room_number+"'><input type='hidden' name='hospital_id' value='"+hospital_id+"'>";
-            rooms+="<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the Room. Ref: Room number = "+room_number+" Related devices will also be removed.');\" style='color:red'>delete</button></td>";
-            rooms+="</form></tr>";
-        }
+            connection = DBConnection.getDBConnection().getConnection();
+            String SQL = "select * from room where hospital_id = ?";
+            preparedStatement = connection.prepareStatement(SQL);
+            preparedStatement.setString(1, hospital_id);
+            resultSet = preparedStatement.executeQuery();
+            while(resultSet.next( )){
+                String room_id = resultSet.getString("room_id");
+                String room_number = resultSet.getString("room_number");
+                rooms+="<tr><form action='./deleteRoom' method='post'><td>"+room_number+"</td><td>"+room_id+"</td><input type='hidden' name='room_id' value='"+room_id+"'><input type='hidden' name='hospital_id' value='"+hospital_id+"'>";
+                rooms+="<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the Room. Ref: Room number = "+room_number+" Related devices will also be removed.');\" style='color:red'>delete</button></td>";
+                rooms+="</form></tr>";
+            }
         } catch (SQLException | IOException | PropertyVetoException e) {
         //throw new IllegalStateException
          rooms = "Error";
@@ -143,15 +143,16 @@ public class Data {
         while(resultSet.next( )){
             String auth = resultSet.getString("auth");
             String serial = resultSet.getString("serial");
-            //String room_id = resultSet.getString("room_id");
+            String room_id = resultSet.getString("room_id");
             String room_number = resultSet.getString("room_number");
             rpi += "<tr><form action='./deleteRPI' method='post'><td>"+auth+"</td><input type='hidden' name='auth' value='"+auth+"'>";
-            rpi += "<td>"+serial+"</td><input type='hidden' name='serial' value='"+serial+"'><td>"+room_number+"</td>";
+            rpi += "<td>"+serial+"</td><input type='hidden' name='serial' value='"+serial+"'><td>"+room_number+"</td><td>"+room_id+"</td>";
             rpi += "<input type='hidden' name='room_number' value='"+room_number+"'>";
-            rpi += "<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the RPI. Ref: Serial = "+serial+", rel: Room: "+room_number+" ');\" style='color:red'>delete</button></td>";
+            rpi += "<input type='hidden' name='room_id' value='"+room_id+"'>";
+            rpi += "<td><button type=\"submit\" onClick=\"return confirm('Do you wish to delete the Device. Ref: Serial = "+serial+", rel: Room: "+room_number+" ');\" style='color:red'>delete</button></td>";
             rpi +="</form>";
-            rpi +="<form action='./editRPI' method='post'><input type='hidden' name='room_number' value='"+room_number+"'><input type='hidden' name='serial' value='"+serial+"'><input type='hidden' name='auth' value='"+auth+"'>";
-            rpi += "<td><button type=\"submit\" style='color:red'>edit</button></td>";
+            rpi +="<form action='./editRPI' method='post'><input type='hidden' name='room_number' value='"+room_number+"'><input type='hidden' name='room_id' value='"+room_id+"'><input type='hidden' name='serial' value='"+serial+"'><input type='hidden' name='auth' value='"+auth+"'>";
+            rpi += "<td><button type=\"submit\" style='color:blue'>edit</button></td>";
             rpi += "</form></tr>";
         }
         } catch (SQLException | IOException | PropertyVetoException e) {
@@ -206,16 +207,63 @@ public class Data {
         
     }
     
-    public static String checkHospitalId(String hospital_id){
+    public static String checkHospitalId(String hospital_id,int sel){
         
         String check = "default";
+        String SQL = "";
         try 
         {
 
         connection = DBConnection.getDBConnection().getConnection();
-        String SQL = "select hospital_id from hospital where hospital_id = ?";
+        if(sel == 0){
+            SQL = "select hospital_id from hospital where hospital_id = ?";
+            
+        }
+        else if(sel == 1){
+            SQL = "select id from hospital where id = ?";
+        }
+        else{
+            return check;
+        }
         preparedStatement = connection.prepareStatement(SQL);
         preparedStatement.setString(1, hospital_id);
+        resultSet = preparedStatement.executeQuery();
+
+        if(resultSet.next()){
+            check = "Available";
+        }else{
+            check = "Unavailable";
+        }
+
+        } catch (SQLException |IOException | PropertyVetoException e) {
+            check = "Error";
+        }
+        finally 
+        {
+            try {
+            DbUtils.closeQuietly(resultSet);
+            DbUtils.closeQuietly(preparedStatement);
+            DbUtils.close(connection);
+            } catch (SQLException ex) {
+                Logger.getLogger(register.class.getName()).log(Level.SEVERE, ex.toString(), ex);
+            }
+        }
+        return check;
+        
+    }
+    public static String checkSerialAuth(String serial,String auth){
+        
+        String check = "default";
+        String SQL = "";
+        try 
+        {
+
+        connection = DBConnection.getDBConnection().getConnection();
+        
+        SQL = "select serial from rpi where serial = ? or auth = ?";
+        preparedStatement = connection.prepareStatement(SQL);
+        preparedStatement.setString(1, serial);
+        preparedStatement.setString(2, auth);
         resultSet = preparedStatement.executeQuery();
 
         if(resultSet.next()){

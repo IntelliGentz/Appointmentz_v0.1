@@ -41,7 +41,7 @@ public class deleteRPI extends HttpServlet{
             preparedStmt.setString (1, serial);
             // execute the preparedstatement
             preparedStmt.execute();
-            res.sendRedirect("./equipments");
+            res.sendRedirect("./equipments?status=Successfully Deleted Device Serial:"+serial);
         }
         catch (SQLException | PropertyVetoException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
