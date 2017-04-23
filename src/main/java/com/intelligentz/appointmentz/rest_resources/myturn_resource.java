@@ -1,6 +1,7 @@
 package com.intelligentz.appointmentz.rest_resources;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonIOException;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.intelligentz.appointmentz.constants.AuthorizationTypes;
@@ -41,6 +42,7 @@ public class myturn_resource {
 
         Device device = DeviceController.getDevice(device_serial);
         if (device != null) {
+            System.out.println("device found");
             int last_number = device.getLast_number();
             String room_id = device.getRoom_id();
             int hospital_id = device.getHospital_id();
@@ -50,9 +52,7 @@ public class myturn_resource {
                     sendToDocLK(i, room_id, hospital_id);
                 }
             } else sendToDocLK(patient_no, room_id, hospital_id);
-
             DeviceController.updateDeviceLastNumber(device_serial, patient_no);
-
             new SMSSender().sendSMStoPatients(patient_no);
         }
     }
@@ -66,8 +66,9 @@ public class myturn_resource {
         String reqBody  = new Gson().toJson(bodyJson);
         try {
             String response = new IdeaBizAPIHandler().sendAPICall(URL, RequestMethod.POST, reqBody,"", ContentTypes.TYPE_JSON,ContentTypes.TYPE_JSON, AuthorizationTypes.TYPE_BEARER);
-            System.out.println("DocLK response======= \n" + response);
-        } catch (IdeabizException e) {
+            JsonObject jsonResponse = new JsonParser().parse(response).getAsJsonObject();
+            logger.info("Doc.lk=======request: " + reqBody + " ==== response: "+response);
+        } catch (IdeabizException | JsonIOException e) {
             logger.error(e.getMessage());
         }
     }

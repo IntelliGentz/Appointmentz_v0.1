@@ -7,7 +7,7 @@
     if(session.getAttribute("hospital_id")==null || session.getAttribute("hospital_name")==null){
         response.sendRedirect("./index.jsp?auth=failed");
     }
-    
+
     %>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,6 +40,7 @@
         <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
         <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
         <script src="js/jquery.min.js"></script>
+
 
     </head>
 
