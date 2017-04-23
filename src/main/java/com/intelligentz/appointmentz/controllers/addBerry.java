@@ -87,9 +87,8 @@ public class addBerry extends HttpServlet{
                 preparedStmt.setString (3, serial);
                 // execute the preparedstatement
                 preparedStmt.execute();
+                res.sendRedirect("./home?status=Device successfully added!");
             }
-
-            res.sendRedirect("./home?status=Device successfully added!");
         }
         catch (SQLException | PropertyVetoException | JsonIOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);

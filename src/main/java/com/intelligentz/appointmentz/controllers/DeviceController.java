@@ -27,7 +27,7 @@ public class DeviceController {
         Device device = null;
         try {
             connection = DBConnection.getDBConnection().getConnection();
-            String SQL1 = "select p.room_number, p.last_number, h.id from  rpi AS p, hospital AS h WHERE p.hospital_id = h.hospital_id AND p.serial = ?";
+            String SQL1 = "select r.room_number, p.last_number, h.id from  rpi AS p, hospital AS h, room AS r WHERE p.room_id = r.room_id AND r.hospital_id = h.hospital_id AND p.serial = ?";
 
             preparedStatement = connection.prepareStatement(SQL1);
             preparedStatement.setString(1, device_serial);
