@@ -50,7 +50,7 @@ public class addBerry extends HttpServlet{
     {  
         try {
 
-            String room_number = req.getParameter("room_number");
+            String room_id = req.getParameter("room_id");
             String hospital_id = req.getParameter("hospital_id");
             String auth = req.getParameter("auth");
             String serial = req.getParameter("serial");
@@ -66,15 +66,6 @@ public class addBerry extends HttpServlet{
                 return;
             }
             
-           
-            String SQL1 = "insert into rpi ( room_id, auth, serial) VALUES (?,?,?)";
-            preparedStmt = connection.prepareStatement(SQL1);
-            preparedStmt.setString (1, room_id);
-            preparedStmt.setString (2, auth);
-            preparedStmt.setString (3, serial);
-            // execute the preparedstatement
-            preparedStmt.execute();
-
             JsonObject jsonRequest = new JsonObject();
             jsonRequest.addProperty("serial",serial);
             jsonRequest.addProperty("auth_code",auth);
@@ -89,16 +80,14 @@ public class addBerry extends HttpServlet{
                 String errorMessage = jsonObject.get("desc").getAsString();
                 res.sendRedirect("./error.jsp?error=Error in adding device!\n+"+errorMessage+"");
             } else {
-                connection = DBConnection.getDBConnection().getConnection();
-                String SQL1 = "insert into rpi ( room_number, hospital_id, auth, serial) VALUES (?,?,?,?)";
+                String SQL1 = "insert into rpi ( room_id, auth, serial) VALUES (?,?,?)";
                 preparedStmt = connection.prepareStatement(SQL1);
-                preparedStmt.setString(1, room_number);
-                preparedStmt.setString(2, hospital_id);
-                preparedStmt.setString(3, auth);
-                preparedStmt.setString(4, serial);
+                preparedStmt.setString (1, room_id);
+                preparedStmt.setString (2, auth);
+                preparedStmt.setString (3, serial);
                 // execute the preparedstatement
                 preparedStmt.execute();
-
+            }
 
             res.sendRedirect("./home?status=Device successfully added!");
         }
