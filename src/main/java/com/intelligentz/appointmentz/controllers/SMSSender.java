@@ -11,9 +11,9 @@ import com.intelligentz.appointmentz.handler.SubscriptionHandler;
  * Created by Lakshan on 2017-04-08.
  */
 public class SMSSender {
-    public void sendSMStoPatients(int current_no) {
-        String nextMessage = String.format(DefaultMessages.NEXT_MESSAGE, "A. B. C. Perera", "10", "Ninewells Hospital", String.valueOf(current_no));
-        String fifthMessage = String.format(DefaultMessages.FIFTH_MESSAGE, "A. B. C. Perera", "10", "Ninewells Hospital", String.valueOf(current_no));
+    public void sendSMStoPatients(int current_no, String room_id, String hospital_name) {
+        String nextMessage = String.format(DefaultMessages.NEXT_MESSAGE, "A. B. C. Perera", room_id, hospital_name, String.valueOf(current_no));
+        String fifthMessage = String.format(DefaultMessages.FIFTH_MESSAGE, "A. B. C. Perera", room_id, hospital_name, String.valueOf(current_no));
         sendSMStoNext(current_no+1, nextMessage);
         sendSMStoNext(current_no+5, fifthMessage);
     }

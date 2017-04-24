@@ -34,7 +34,8 @@ public class myturn_resource {
     @POST
     @Path("/")
     public void get(String request) {
-        System.out.println(request);
+        //System.out.println(request);
+        logger.info("Device Request Received=======" + request);
         JsonObject jsonObject = new JsonParser().parse(request).getAsJsonObject();
         JsonObject mergeData = jsonObject.get("merge_data").getAsJsonObject();
         int patient_no = Integer.parseInt(mergeData.get("patent_no").getAsString());
@@ -45,6 +46,7 @@ public class myturn_resource {
             System.out.println("device found");
             int last_number = device.getLast_number();
             String room_id = device.getRoom_id();
+            String hospital_name = device.getHospital_name();
             int hospital_id = device.getHospital_id();
 
             if (last_number < patient_no) {
@@ -53,7 +55,7 @@ public class myturn_resource {
                 }
             } else sendToDocLK(patient_no, room_id, hospital_id);
             DeviceController.updateDeviceLastNumber(device_serial, patient_no);
-            new SMSSender().sendSMStoPatients(patient_no);
+            new SMSSender().sendSMStoPatients(patient_no, room_id, hospital_name);
         }
     }
 
@@ -65,9 +67,10 @@ public class myturn_resource {
         bodyJson.addProperty("number",patient_no);
         String reqBody  = new Gson().toJson(bodyJson);
         try {
+            logger.info("Doc.lk=======request: " + reqBody);
             String response = new IdeaBizAPIHandler().sendAPICall(URL, RequestMethod.POST, reqBody,"", ContentTypes.TYPE_JSON,ContentTypes.TYPE_JSON, AuthorizationTypes.TYPE_BEARER);
             JsonObject jsonResponse = new JsonParser().parse(response).getAsJsonObject();
-            logger.info("Doc.lk=======request: " + reqBody + " ==== response: "+response);
+            logger.info("Doc.lk=======response: " + response);
         } catch (IdeabizException | JsonIOException e) {
             logger.error(e.getMessage());
         }

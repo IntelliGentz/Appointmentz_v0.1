@@ -73,12 +73,13 @@ public class addBerry extends HttpServlet{
             jsonRequest.addProperty("event", "PRESSED");
             String reqBody  = new Gson().toJson(jsonRequest);
 
+            logger.info("Device Add====== Request: "+reqBody);
             String response = new IdeaBizAPIHandler().sendAPICall(URLs.DEVICE_REG_URL, RequestMethod.POST, reqBody,"", ContentTypes.TYPE_JSON,ContentTypes.TYPE_TEXT, AuthorizationTypes.TYPE_BEARER);
-            logger.info("Device Add====== Request: "+reqBody+"====== Response: " + response);
+            logger.info("Device Add====== Response: " + response);
             if (response.contains("Invalid")) {
                 JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
                 String errorMessage = jsonObject.get("desc").getAsString();
-                res.sendRedirect("./error.jsp?error=Error in adding device!\n+"+errorMessage+"");
+                res.sendRedirect("./addRPI.jsp?status="+errorMessage+"&serial="+serial+"&auth="+auth+"&room_id="+room_id);
             } else {
                 String SQL1 = "insert into rpi ( room_id, auth, serial) VALUES (?,?,?)";
                 preparedStmt = connection.prepareStatement(SQL1);
